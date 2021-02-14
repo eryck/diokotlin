@@ -1,0 +1,2 @@
+com/xpmwmobile/contribmontano/BuildConfig.java
+ com.xpmwmobile.contribmontano.BuildConfig

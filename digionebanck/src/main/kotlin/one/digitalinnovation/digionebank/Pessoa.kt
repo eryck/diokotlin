@@ -1,9 +1,9 @@
 package one.digitalinnovation.digionebank
 
 
-open class Pessoa(
-   open val nome: String,
-   open val cpf: String
+abstract class Pessoa(
+   val nome: String,
+   val cpf: String
 ) {
 
 }

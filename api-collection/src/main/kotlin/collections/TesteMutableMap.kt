@@ -16,4 +16,13 @@ fun main(){
     repositorio.creat(augusto.nome, augusto)
 
     println(repositorio.findById(joao.nome))
+
+    println("*************************")
+
+    repositorio.findAll().forEach { println(it) }
+
+    println("*************************")
+
+    repositorio.remove(carlos.nome)
+    repositorio.findAll().forEach { println(it) }
 }

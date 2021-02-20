@@ -21,7 +21,7 @@ fun main(){
     resultSubtract.forEach { println(it) }
 
     println("**********")
-    
+
     val resultIntercept = funcionario3.intersect(funcionario2)
     resultIntercept.forEach { println(it) }
 

@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">IMC!</string>
+    <string name="app_name">Calc IMC</string>
     <string name="imc">IMC</string>
     <string name="insira_seu_peso_em_kg">Enter your weight in KG</string>
     <string name="calcular">Calculate</string>
-    <string name="insira_a_sua_altura_em_cm">"Enter your height in Cm "</string>
+    <string name="insira_a_sua_altura_em_cm">"Enter your height in Meters "</string>
 </resources>

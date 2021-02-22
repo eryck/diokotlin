@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">IMC!</string>
+    <string name="app_name">Calcula IMC</string>
     <string name="imc">IMC</string>
     <string name="insira_seu_peso_em_kg">Insira seu peso em Kg</string>
     <string name="calcular">Calcular</string>
-    <string name="insira_a_sua_altura_em_cm">Insira a sua Altura em Cm</string>
+    <string name="insira_a_sua_altura_em_cm">Insira a sua Altura em Metros</string>
 </resources>

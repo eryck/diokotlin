@@ -64,4 +64,9 @@
         app:exitAnim="@anim/fragment_close_exit"
         app:popUpTo="@id/gameFragment"
         app:popUpToInclusive="true" />
+    <fragment
+        android:id="@+id/aboutFragment"
+        android:name="com.example.android.navigation.AboutFragment"
+        android:label="fragment_about"
+        tools:layout="@layout/fragment_about" />
 </navigation>

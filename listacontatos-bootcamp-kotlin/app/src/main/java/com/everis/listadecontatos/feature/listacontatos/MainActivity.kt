@@ -62,14 +62,6 @@ class MainActivity : BaseActivity() {
     private fun onClickBuscar(){
         val busca = etBuscar.text.toString()
         var listaFiltrada: List<ContatosVO> = ContatoSingleton.lista
-        if(!busca.isNullOrEmpty()){
-            listaFiltrada = ContatoSingleton.lista.filter { contato ->
-                if (contato.nome.toLowerCase().contains(busca.toLowerCase())){
-                    return@filter true
-                }
-                return@filter false
-            }
-        }
         adapter = ContatoAdapter(this,listaFiltrada) {onClickItemRecyclerView(it)}
         recyclerView.adapter = adapter
         Toast.makeText(this,"Buscando por $busca",Toast.LENGTH_SHORT).show()

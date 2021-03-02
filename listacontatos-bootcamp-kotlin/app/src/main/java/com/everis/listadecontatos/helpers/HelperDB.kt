@@ -11,7 +11,7 @@ class HelperDB(
 
     companion object{
         private val NOME_BANCO = "contato.db"
-        private val VERSAO_ATUAL = 1
+        private val VERSAO_ATUAL = 2
 
     }
 
@@ -20,7 +20,7 @@ class HelperDB(
     val COLUMNS_NOME = "nome"
     val COLUMNS_TELEFONE = "telefone"
     val DROP_TABLE = "DROP TABLE IF EXISTS $TABLE_NAME"
-    val CREATE_TABLE = "CRATE TABLE $TABLE_NAME (" +
+    val CREATE_TABLE = "CREATE TABLE $TABLE_NAME (" +
             "$COLUMNS_ID INTEGER NOT NULL," +
             "$COLUMNS_NOME TEXT NOT NULL," +
             "$COLUMNS_TELEFONE TEXT NOT NULL," +
@@ -45,7 +45,7 @@ class HelperDB(
         val db = readableDatabase ?: return mutableListOf()
         val lista : MutableList<ContatosVO> = mutableListOf<ContatosVO>()
         val sql = "SELECT * FROM $TABLE_NAME "
-        val cursor = db.rawQuery(sql, null) ?: return mutableListOf()
+        val cursor = db.rawQuery(sql, arrayOf()) ?: return mutableListOf()
         while (cursor.moveToNext()){
             var cotato = ContatosVO(
                     cursor.getInt(cursor.getColumnIndex(COLUMNS_ID)),

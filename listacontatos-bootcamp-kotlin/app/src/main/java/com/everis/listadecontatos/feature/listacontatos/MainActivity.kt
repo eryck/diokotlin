@@ -12,6 +12,7 @@ import com.everis.listadecontatos.feature.listacontatos.adapter.ContatoAdapter
 import com.everis.listadecontatos.feature.listacontatos.model.ContatosVO
 import com.everis.listadecontatos.singleton.ContatoSingleton
 import kotlinx.android.synthetic.main.activity_main.*
+import java.lang.Exception
 
 
 class MainActivity : BaseActivity() {
@@ -62,8 +63,12 @@ class MainActivity : BaseActivity() {
 
     private fun onClickBuscar(){
         val busca = etBuscar.text.toString()
-        var listaFiltrada: List<ContatosVO> = ContatoSingleton.lista
-        listaFiltrada = ContatoApplication.instance.helperDB?.buscarContatos(busca) ?: mutableListOf()
+        var listaFiltrada: List<ContatosVO> = mutableListOf()
+        try{
+            listaFiltrada = ContatoApplication.instance.helperDB?.buscarContatos(busca) ?: mutableListOf()
+        }catch (ex: Exception){
+            ex.printStackTrace()
+        }
         adapter = ContatoAdapter(this,listaFiltrada) {onClickItemRecyclerView(it)}
         recyclerView.adapter = adapter
         Toast.makeText(this,"Buscando por $busca",Toast.LENGTH_SHORT).show()

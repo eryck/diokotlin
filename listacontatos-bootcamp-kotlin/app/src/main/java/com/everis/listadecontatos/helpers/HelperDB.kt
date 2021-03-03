@@ -43,18 +43,25 @@ class HelperDB(
         onCreate(db)
     }
 
-    fun buscarContatos(busca: String): List<ContatosVO>{
+    fun buscarContatos(busca: String, isBuscaPorID: Boolean = false): List<ContatosVO>{
         //salvarContato(ContatosVO(0, "GLUTI", "123456"))
         val db :SQLiteDatabase = readableDatabase ?: return mutableListOf()
-        val lista : MutableList<ContatosVO> = mutableListOf<ContatosVO>()
+        var lista : MutableList<ContatosVO> = mutableListOf<ContatosVO>()
         /*
         val sql = "SELECT * FROM $TABLE_NAME WHERE $COLUMNS_NOME LIKE ?"
         var buscarComPercetual = "%$busca%"
         val cursor :Cursor = db.rawQuery(db, arrayOf(buscarComPercetual))
         */
-        var whare = "$COLUMNS_NOME LIKE ?"
-        var buscarComPercetual = arrayOf("%$busca%")
-        val cursor :Cursor = db.query(TABLE_NAME, null, whare, buscarComPercetual, null, null, null)
+        var where: String? = null
+        var args: Array<String> = arrayOf()
+        if(isBuscaPorID){
+            where = "$COLUMNS_ID = ?"
+            args = arrayOf("$busca")
+        }else{
+            where = "$COLUMNS_NOME LIKE ?"
+            args = arrayOf("%$busca%")
+        }
+        val cursor :Cursor = db.query(TABLE_NAME, null, where, args, null, null, null)
 
         if(cursor == null){
             db.close()

@@ -95,6 +95,7 @@ class HelperDB(
 
     fun deletarContato(id: Int){
         val db = writableDatabase ?: return
+
         /*
         val where  = "id = ?"
         val args : Array<String> = arrayOf("$id")
@@ -108,5 +109,23 @@ class HelperDB(
         db.close()
     }
 
-    
+    fun updateContato(contato: ContatosVO){
+        val db = writableDatabase ?: return
+
+        /*
+        val content = ContentValues()
+        content.put(COLUMNS_NOME, contato.nome)
+        content.put(COLUMNS_TELEFONE, contato.telefone)
+
+        val where = "id = ?"
+        val arg = arrayOf("${contato.id}")
+
+        db.update(TABLE_NAME, content, where, arg)
+        */
+
+        val sql = "UPDATE $TABLE_NAME SET $COLUMNS_NOME = ?, $COLUMNS_TELEFONE =? WHERE $COLUMNS_ID = ?"
+        val arg = arrayOf(contato.nome, contato.telefone, contato.id)
+        db.execSQL(sql, arg)
+        db.close()
+    }
 }

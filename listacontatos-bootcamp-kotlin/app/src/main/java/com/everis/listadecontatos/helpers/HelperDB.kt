@@ -47,9 +47,15 @@ class HelperDB(
         //salvarContato(ContatosVO(0, "GLUTI", "123456"))
         val db :SQLiteDatabase = readableDatabase ?: return mutableListOf()
         val lista : MutableList<ContatosVO> = mutableListOf<ContatosVO>()
+        /*
         val sql = "SELECT * FROM $TABLE_NAME WHERE $COLUMNS_NOME LIKE ?"
         var buscarComPercetual = "%$busca%"
-        val cursor :Cursor = db.rawQuery(sql, arrayOf(buscarComPercetual))
+        val cursor :Cursor = db.rawQuery(db, arrayOf(buscarComPercetual))
+        */
+        var whare = "$COLUMNS_NOME LIKE ?"
+        var buscarComPercetual = arrayOf("%$busca%")
+        val cursor :Cursor = db.query(TABLE_NAME, null, whare, buscarComPercetual, null, null, null)
+
         if(cursor == null){
             db.close()
             return mutableListOf()
@@ -68,7 +74,7 @@ class HelperDB(
 
     fun salvarContato(contato: ContatosVO){
         val db :SQLiteDatabase = writableDatabase ?: return
-        /**
+        /*
         val sql = "INSERT INTO $TABLE_NAME ($COLUMNS_NOME, $COLUMNS_TELEFONE) VALUES (?,?)"
         val array : Array<String> = arrayOf(contato.nome, contato.telefone)
         db.execSQL(sql, array)

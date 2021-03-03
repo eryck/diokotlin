@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import com.everis.listadecontatos.R
+import com.everis.listadecontatos.application.ContatoApplication
 import com.everis.listadecontatos.bases.BaseActivity
 import com.everis.listadecontatos.feature.listacontatos.model.ContatosVO
 import com.everis.listadecontatos.singleton.ContatoSingleton
@@ -41,7 +42,8 @@ class ContatoActivity : BaseActivity() {
             telefone
         )
         if(index == -1) {
-            ContatoSingleton.lista.add(contato)
+            //ContatoSingleton.lista.add(contato)
+            ContatoApplication.instance.helperDB?.salvarContato(contato)
         }else{
             ContatoSingleton.lista.set(index,contato)
         }

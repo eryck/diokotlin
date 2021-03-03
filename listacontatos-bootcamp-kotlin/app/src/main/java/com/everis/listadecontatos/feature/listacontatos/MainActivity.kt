@@ -59,6 +59,7 @@ class MainActivity : BaseActivity() {
 
     private fun onClickBuscar(){
         val busca = etBuscar.text.toString()
+        //Thread.sleep(50000)
         var listaFiltrada: List<ContatosVO> = mutableListOf()
         try{
             listaFiltrada = ContatoApplication.instance.helperDB?.buscarContatos(busca) ?: mutableListOf()

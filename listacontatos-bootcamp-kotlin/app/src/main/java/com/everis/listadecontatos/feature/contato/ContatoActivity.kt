@@ -1,6 +1,5 @@
 package com.everis.listadecontatos.feature.contato
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import com.everis.listadecontatos.R
@@ -13,7 +12,7 @@ import kotlinx.android.synthetic.main.activity_contato.toolBar
 
 class ContatoActivity : BaseActivity() {
 
-    private var index: Int = -1
+    private var idContato: Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,12 +23,12 @@ class ContatoActivity : BaseActivity() {
     }
 
     private fun setupContato(){
-        index = intent.getIntExtra("index",-1)
-        if (index == -1){
+        idContato = intent.getIntExtra("index",-1)
+        if (idContato == -1){
             btnExcluirContato.visibility = View.GONE
             return
         }
-        var lista : List<ContatosVO> = ContatoApplication.instance.helperDB?.buscarContatos("$index", true) ?: return
+        var lista : List<ContatosVO> = ContatoApplication.instance.helperDB?.buscarContatos("$idContato", true) ?: return
         var contato : ContatosVO = lista.getOrNull(0) ?: return
         //etNome.setText(ContatoSingleton.lista[index].nome)
         //etTelefone.setText(ContatoSingleton.lista[index].telefone)
@@ -45,18 +44,18 @@ class ContatoActivity : BaseActivity() {
             nome,
             telefone
         )
-        if(index == -1) {
+        if(idContato == -1) {
             //ContatoSingleton.lista.add(contato)
             ContatoApplication.instance.helperDB?.salvarContato(contato)
         }else{
-            ContatoSingleton.lista.set(index,contato)
+            ContatoSingleton.lista.set(idContato,contato)
         }
         finish()
     }
 
     fun onClickExcluirContato(view: View) {
-        if(index > -1){
-            ContatoSingleton.lista.removeAt(index)
+        if(idContato > -1){
+            ContatoApplication.instance.helperDB?.deletarContato(idContato)
             finish()
         }
     }

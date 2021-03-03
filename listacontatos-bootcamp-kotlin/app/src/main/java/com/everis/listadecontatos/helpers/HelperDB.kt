@@ -1,6 +1,8 @@
 package com.everis.listadecontatos.helpers
 
+import android.content.ContentValues
 import android.content.Context
+import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import com.everis.listadecontatos.feature.listacontatos.model.ContatosVO
@@ -41,11 +43,17 @@ class HelperDB(
         onCreate(db)
     }
 
-    fun buscarContatos(buscar: String): List<ContatosVO>{
-        val db = readableDatabase ?: return mutableListOf()
+    fun buscarContatos(busca: String): List<ContatosVO>{
+        //salvarContato(ContatosVO(0, "GLUTI", "123456"))
+        val db :SQLiteDatabase = readableDatabase ?: return mutableListOf()
         val lista : MutableList<ContatosVO> = mutableListOf<ContatosVO>()
-        val sql = "SELECT * FROM $TABLE_NAME "
-        val cursor = db.rawQuery(sql, arrayOf()) ?: return mutableListOf()
+        val sql = "SELECT * FROM $TABLE_NAME WHERE $COLUMNS_NOME LIKE ?"
+        var buscarComPercetual = "%$busca%"
+        val cursor :Cursor = db.rawQuery(sql, arrayOf(buscarComPercetual))
+        if(cursor == null){
+            db.close()
+            return mutableListOf()
+        }
         while (cursor.moveToNext()){
             var cotato = ContatosVO(
                     cursor.getInt(cursor.getColumnIndex(COLUMNS_ID)),
@@ -54,6 +62,21 @@ class HelperDB(
             )
             lista.add(cotato)
         }
+        db.close()
         return lista
+    }
+
+    fun salvarContato(contato: ContatosVO){
+        val db :SQLiteDatabase = writableDatabase ?: return
+        /**
+        val sql = "INSERT INTO $TABLE_NAME ($COLUMNS_NOME, $COLUMNS_TELEFONE) VALUES (?,?)"
+        val array : Array<String> = arrayOf(contato.nome, contato.telefone)
+        db.execSQL(sql, array)
+        */
+        val content = ContentValues()
+        content.put(COLUMNS_NOME, contato.nome)
+        content.put(COLUMNS_TELEFONE, contato.telefone)
+        db.insert(TABLE_NAME, null, content)
+        db.close()
     }
 }

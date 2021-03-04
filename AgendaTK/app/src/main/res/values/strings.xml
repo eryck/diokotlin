@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">AgendaTK</string>
+    <string name="app_name">Contatos</string>
+    <string name="iv_photograph_content_description">Photograph contact</string>
 </resources>

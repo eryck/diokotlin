@@ -17,12 +17,29 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        bindView()
-
+        bindViews()
+        updateList()
     }
 
-    private fun bindView(){
+    private fun bindViews(){
         rvList.adapter = adapter
         rvList.layoutManager = LinearLayoutManager(this)
+    }
+
+    private fun updateList(){
+        adapter.updateList(
+            arrayListOf(
+                Contact(
+                    "Eryck Kaique",
+                    "(63) 89999-9999",
+                    "img.png"
+                ),
+                Contact(
+                    "Eryck Kaique",
+                    "(63) 89999-9999",
+                    "img.png"
+                )
+            )
+        )
     }
 }

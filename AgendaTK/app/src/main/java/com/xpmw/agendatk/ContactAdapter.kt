@@ -17,15 +17,15 @@ class ContactAdapter : RecyclerView.Adapter<ContactAdapter.ContacAdapterViewHold
         return ContacAdapterViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: ContacAdapterViewHolder, position: Int) {
-        holder.bind(list[position])
-    }
-
     override fun getItemCount(): Int {
         return list.size
     }
 
-    fun updateList(List: List<Contact>){
+    override fun onBindViewHolder(holder: ContacAdapterViewHolder, position: Int) {
+        holder.bind(list[position])
+    }
+
+    fun updateList(list: List<Contact>){
         this.list.clear()
         this.list.addAll(list)
         notifyDataSetChanged()
@@ -34,7 +34,7 @@ class ContactAdapter : RecyclerView.Adapter<ContactAdapter.ContacAdapterViewHold
     class ContacAdapterViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
         private val tvName: TextView = itemView.findViewById(R.id.tv_name)
         private val tvPhone: TextView = itemView.findViewById(R.id.tv_phone)
-        private val ivPhotograph: ImageView = itemView.findViewById(R.id.iv_photografic)
+        private val ivPhotograph: ImageView = itemView.findViewById(R.id.iv_photography)
 
         fun bind(contact: Contact){
             tvName.text = contact.name

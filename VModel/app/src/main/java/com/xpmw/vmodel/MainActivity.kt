@@ -21,11 +21,20 @@ class MainActivity : AppCompatActivity() {
         initDados()
         initContador()
         initClick()
+
+        validaContador()
+    }
+
+    private fun validaContador() {
+        if(contador > 5){
+            contador = 0
+        }
     }
 
     private fun initClick() {
         btnDados.setOnClickListener{
             contador ++
+            validaContador()
             initContador()
         }
         btnMostrar.setOnClickListener{

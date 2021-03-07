@@ -1,5 +1,6 @@
 package com.xpmw.agendatk
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -12,14 +13,16 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.xpmw.agendatk.ContactDatailActivity.Companion.EXTRA_CONTACT
+import java.time.Instant
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), ClickItemContactListener {
 
     private val rvList: RecyclerView by lazy {
         findViewById(R.id.rv_list)
     }
 
-    private val adapter = ContactAdapter()
+    private val adapter = ContactAdapter(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,7 +59,7 @@ class MainActivity : AppCompatActivity() {
                 ),
                 Contact(
                     "João Jose",
-                    "(63) 89999-9999",
+                    "(63) 85555-2545",
                     "img.png"
                 )
             )
@@ -86,5 +89,11 @@ class MainActivity : AppCompatActivity() {
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun clickItemContact(contact: Contact){
+        val intent = Intent(this, ContactDatailActivity::class.java)
+        intent.putExtra(EXTRA_CONTACT, contact)
+        startActivity(intent)
     }
 }

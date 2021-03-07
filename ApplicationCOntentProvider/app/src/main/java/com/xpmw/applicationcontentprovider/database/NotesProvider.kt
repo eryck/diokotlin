@@ -36,6 +36,7 @@ class NotesProvider : ContentProvider() {
             val linesAffect: Int = db.delete(TABLE_NOTES, "$_ID", arrayOf(uri.lastPathSegment))
             db.close()
             context?.contentResolver?.notifyChange(uri, null)
+            return linesAffect
         }else{
             throw UnsupportedSchemeException("Uri inválida pra exclusão!")
         }

@@ -22,8 +22,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/tv_phone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/tv_name"
-            tools:srcCompat="@tools:sample/avatars"
-            android:contentDescription="@string/photography" />
+            tools:srcCompat="@tools:sample/avatars" />
 
         <TextView
             android:id="@+id/tv_name"

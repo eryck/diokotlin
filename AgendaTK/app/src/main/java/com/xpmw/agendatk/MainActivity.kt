@@ -2,45 +2,29 @@ package com.xpmw.agendatk
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Message
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
-import android.view.View
 import android.widget.Toast
-import android.widget.Toolbar
-import androidx.appcompat.app.ActionBar
-import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 class MainActivity : AppCompatActivity() {
 
     private val rvList: RecyclerView by lazy {
-        findViewById<RecyclerView>(R.id.rv_list)
+        findViewById(R.id.rv_list)
     }
 
     private val adapter = ContactAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.drawer_menu)
+        setContentView(R.layout.activity_main)
 
-        initDrawer()
         bindViews()
         updateList()
     }
-
-    private fun initDrawer(){
-        val drawerLayout = findViewById<View>(R.id.drawer_layout) as DrawerLayout
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        setSupportActionBar(toolbar)
-
-        val toogle = ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_drawer, R.string.close_drawer)
-        drawerLayout.addDrawerListener(toogle)
-        toogle.syncState()
-    }
-
 
     private fun bindViews(){
         rvList.adapter = adapter
@@ -56,16 +40,12 @@ class MainActivity : AppCompatActivity() {
                     "img.png"
                 ),
                 Contact(
-                    "Eryck Kaique",
+                    "João Jose",
                     "(63) 89999-9999",
                     "img.png"
                 )
             )
         )
-    }
-
-    private fun showToast(message: String){
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -74,8 +54,13 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
+    private fun showToast(message: String){
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId){
+
+        return when(item.itemId){
             R.id.item_menu_1 -> {
                 showToast("Menu 1")
                 return true

@@ -1,8 +1,10 @@
 package com.xpmw.applicationcontentprovider
 
 import android.database.Cursor
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.BaseColumns._ID
 import androidx.loader.app.LoaderManager
 import androidx.loader.content.CursorLoader
 import androidx.loader.content.Loader
@@ -26,7 +28,18 @@ class MainActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor> 
         noteAdd = findViewById(R.id.note_add)
         noteAdd.setOnClickListener {  }
 
-        adapeter = NotesAdapeter()
+        adapeter = NotesAdapeter(object : NoteClickedListener{
+            override fun noteClickedItem(cursor: Cursor) {
+                val id = cursor.getLong(cursor.getColumnIndex(_ID))
+
+            }
+
+            override fun noteRemoveItem(cursor: Cursor?) {
+                val id : Long? = cursor?.getLong(cursor.getColumnIndex(_ID))
+                contentResolver.delete(Uri.withAppendedPath(URI_NOTES, id.toString()), null, null)
+            }
+
+        })
         adapeter.setHasStableIds(true)
 
         noteRecyclerView = findViewById(R.id.notes_recycler)

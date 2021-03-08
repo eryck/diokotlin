@@ -1,4 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ApplicationCOntentProvider</string>
     <string name="note_text_remove">remover</string>
 </resources>

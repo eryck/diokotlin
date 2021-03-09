@@ -12,7 +12,6 @@ import androidx.fragment.app.DialogFragment
 import com.xpmw.applicationcontentprovider.database.NotesDataBaseHelper.Companion.DESCRIPTION_NOTES
 import com.xpmw.applicationcontentprovider.database.NotesDataBaseHelper.Companion.TITLE_NOTES
 import com.xpmw.applicationcontentprovider.database.NotesProvider.Companion.URI_NOTES
-import java.net.URI
 
 class NotesDetailFragment: DialogFragment(), DialogInterface.OnClickListener {
 
@@ -36,7 +35,7 @@ class NotesDetailFragment: DialogFragment(), DialogInterface.OnClickListener {
         val view = activity?.layoutInflater?.inflate(R.layout.note_detail, null)
 
         noteEditTitle = view?.findViewById(R.id.note_edt_title) as EditText
-        noteEditDescritiop = view?.findViewById(R.id.note_edt_description) as EditText
+        noteEditDescritiop = view.findViewById(R.id.note_edt_description) as EditText
 
         var newNote =true
         if (arguments != null && arguments?.getLong(EXTRA_ID) != 0L){

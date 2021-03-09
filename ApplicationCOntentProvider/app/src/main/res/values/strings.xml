@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ApplicationCOntentProvider</string>
+    <string name="app_name">Content Provider</string>
     <string name="note_text_remove">remover</string>
     <string name="note_title_hint">título</string>
     <string name="note_description">descrição</string>

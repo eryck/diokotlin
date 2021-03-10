@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Application Content Provider Client</string>
+    <string name="app_cliente">App Cliente</string>
+    <string name="atualiza">Atualiza</string>
+</resources>

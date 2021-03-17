@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">ContatosBootcamp</string>
+    <string name="nome">Nome</string>
+    <string name="telefone">Telefone</string>
+</resources>

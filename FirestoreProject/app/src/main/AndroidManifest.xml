@@ -9,8 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FirestoreProject">
-        <activity android:name=".MainActivity"></activity>
-        <activity android:name=".RecyclerviewActivity">
+        <activity android:name=".activity.UserActivity"></activity>
+        <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -30,7 +30,9 @@ class MainActivity : AppCompatActivity() {
             MyRetrofit.instance?.productApi()?.getProductApi() as Call<List<Product>>
 
         call.enqueue(object : Callback<List<Product>>{
-            override fun onResponse(call: Call<List<Product>>, response: Response<List<Product>>) {
+            override fun onResponse(
+                call: Call<List<Product>>,
+                response: Response<List<Product>>) {
                 val adapter = ProductAdapter(this@MainActivity, response.body()!!.toList())
                 recyclerProducts.adapter = adapter
             }

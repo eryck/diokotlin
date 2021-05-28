@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun populateList(list: List<Movie>) {
-        moviesList.apply {
+        moviesListRecyclerView.apply {
             hasFixedSize()
             adapter = MoviesAdapter(list)
         }

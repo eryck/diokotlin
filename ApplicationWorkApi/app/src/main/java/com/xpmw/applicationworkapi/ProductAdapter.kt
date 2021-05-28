@@ -16,7 +16,8 @@ class ProductAdapter(
     ): RecyclerView.Adapter<ProductViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder =
-        ProductViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.product_item, parent, false))
+        ProductViewHolder(LayoutInflater.from(parent.context)
+            .inflate(R.layout.product_item, parent, false))
 
     override fun getItemCount(): Int = productList.size
 

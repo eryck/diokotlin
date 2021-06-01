@@ -8,19 +8,20 @@ import android.view.WindowInsets
 import android.view.WindowManager
 import br.com.xpmw.myshoppal.R
 import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.activity_register.*
 
-class LoginActivity : AppCompatActivity() {
+class RegisterActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
+        setContentView(R.layout.activity_register)
 
         setUpFullScreen()
-        registerActivity()
+        loginActivity()
     }
 
-    private fun registerActivity(){
-        tv_register.setOnClickListener {
-            val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
+    private fun loginActivity(){
+        tv_login.setOnClickListener {
+            val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
             startActivity(intent)
             finish()
         }

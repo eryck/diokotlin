@@ -7,6 +7,10 @@ import android.text.TextUtils
 import android.view.WindowInsets
 import android.view.WindowManager
 import br.com.xpmw.myshoppal.R
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.auth.AuthResult
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import kotlinx.android.synthetic.main.activity_register.*
 
 class RegisterActivity : BaseActivity() {
@@ -20,18 +24,18 @@ class RegisterActivity : BaseActivity() {
         register()
     }
 
-    private fun register(){
+    private fun register() {
         btn_register.setOnClickListener {
-            validateRegisterDetails()
+            registerUser()
         }
     }
 
-    private fun setupActionBar(){
+    private fun setupActionBar() {
 
         setSupportActionBar(toolbar_register_activity)
 
         val actionBar = supportActionBar
-        if (actionBar != null){
+        if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true)
             actionBar.setHomeAsUpIndicator(R.drawable.ic_baseline_color_black_24)
         }
@@ -39,7 +43,7 @@ class RegisterActivity : BaseActivity() {
         toolbar_register_activity.setNavigationOnClickListener { onBackPressed() }
     }
 
-    private fun loginActivity(){
+    private fun loginActivity() {
         tv_login.setOnClickListener {
             val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
             startActivity(intent)
@@ -82,23 +86,56 @@ class RegisterActivity : BaseActivity() {
             }
 
             TextUtils.isEmpty(et_confirm_password.text.toString().trim { it <= ' ' }) -> {
-                showErrorSnackBar(resources.getString(R.string.err_msg_enter_confirm_password), true)
+                showErrorSnackBar(
+                    resources.getString(R.string.err_msg_enter_confirm_password),
+                    true
+                )
                 false
             }
 
             et_password.text.toString().trim { it <= ' ' } != et_confirm_password.text.toString()
                 .trim { it <= ' ' } -> {
-                showErrorSnackBar(resources.getString(R.string.err_msg_password_and_confirm_password_mismatch), true)
+                showErrorSnackBar(
+                    resources.getString(R.string.err_msg_password_and_confirm_password_mismatch),
+                    true
+                )
                 false
             }
             !cb_terms_and_condition.isChecked -> {
-                showErrorSnackBar(resources.getString(R.string.err_msg_agree_terms_and_condition), true)
+                showErrorSnackBar(
+                    resources.getString(R.string.err_msg_agree_terms_and_condition),
+                    true
+                )
                 false
             }
             else -> {
-                showErrorSnackBar(resources.getString(R.string.register_successfully), false)
+                //showErrorSnackBar(resources.getString(R.string.register_successfully), false)
                 true
             }
+        }
+    }
+
+    private fun registerUser() {
+        //Check with validate function if the entries are valid or not.
+        if (validateRegisterDetails()) {
+            val email: String = et_email.text.toString().trim { it <= ' ' }
+            val password: String = et_password.text.toString().trim { it <= ' ' }
+
+            FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(
+                    OnCompleteListener<AuthResult> { task ->
+                        if (task.isSuccessful) {
+                            val firebaseUser: FirebaseUser = task.result!!.user!!
+
+                            showErrorSnackBar(
+                                "You are registered successfully. Your user id is ${firebaseUser.uid}",
+                                false
+                            )
+                        } else {
+                            showErrorSnackBar(task.exception!!.message.toString(), true)
+                        }
+                    }
+                )
         }
     }
 

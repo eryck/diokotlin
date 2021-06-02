@@ -60,12 +60,12 @@
 
         <EditText
             android:id="@+id/et_mail"
+            style="@style/Theme.MyShopPal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:autofillHints="@string/et_hint_email_id"
             android:inputType="text"
             android:padding="@dimen/et_padding"
-            android:textColor="@color/colorPrimaryText"
             android:textSize="@dimen/et_textSize" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -85,12 +85,12 @@
 
         <EditText
             android:id="@+id/et_password"
+            style="@style/Theme.MyShopPal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:autofillHints="@string/et_hint_password"
             android:inputType="textPassword"
             android:padding="@dimen/et_padding"
-            android:textColor="@color/colorPrimaryText"
             android:textSize="@dimen/et_textSize" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -102,7 +102,6 @@
         android:foreground="?attr/selectableItemBackground"
         android:padding="@dimen/clickable_text_view_padding"
         android:text="@string/lbl_forgot_password"
-        android:textColor="@color/colorSecondaryText"
         android:textSize="@dimen/forgot_password_textSize"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/til_password" />

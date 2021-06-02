@@ -55,11 +55,11 @@
 
                 <EditText
                     android:id="@+id/et_first_name"
+                    style="@style/Theme.MyShopPal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text"
                     android:padding="@dimen/et_padding"
-                    android:textColor="@color/colorPrimaryText"
                     android:textSize="@dimen/et_textSize" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -79,11 +79,11 @@
 
                 <EditText
                     android:id="@+id/et_last_name"
+                    style="@style/Theme.MyShopPal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text"
                     android:padding="@dimen/et_padding"
-                    android:textColor="@color/colorPrimaryText"
                     android:textSize="@dimen/et_textSize" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -103,11 +103,11 @@
 
                 <EditText
                     android:id="@+id/et_email"
+                    style="@style/Theme.MyShopPal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textEmailAddress"
                     android:padding="@dimen/et_padding"
-                    android:textColor="@color/colorPrimaryText"
                     android:textSize="@dimen/et_textSize" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -127,11 +127,11 @@
 
                 <EditText
                     android:id="@+id/et_password"
+                    style="@style/Theme.MyShopPal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"
                     android:padding="@dimen/et_padding"
-                    android:textColor="@color/colorPrimaryText"
                     android:textSize="@dimen/et_textSize" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -151,11 +151,11 @@
 
                 <EditText
                     android:id="@+id/et_confirm_password"
+                    style="@style/Theme.MyShopPal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"
                     android:padding="@dimen/et_padding"
-                    android:textColor="@color/colorPrimaryText"
                     android:textSize="@dimen/et_textSize" />
             </com.google.android.material.textfield.TextInputLayout>
 

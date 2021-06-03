@@ -20,7 +20,6 @@ class LoginActivity : BaseActivity() {
         optionClick()
     }
 
-
     private fun setUpFullScreen() {
         @Suppress("DEPRECATION")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
@@ -35,7 +34,8 @@ class LoginActivity : BaseActivity() {
 
     private fun optionClick(){
         tv_forgot_password.setOnClickListener {
-
+            val intent = Intent(this@LoginActivity, ForgotPasswordActivity::class.java)
+            startActivity(intent)
         }
         btn_login.setOnClickListener {
             loginRegisteredUser()

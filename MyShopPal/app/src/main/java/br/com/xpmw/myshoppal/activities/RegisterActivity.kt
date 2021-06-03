@@ -6,7 +6,10 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.view.WindowInsets
 import android.view.WindowManager
+import android.widget.Toast
 import br.com.xpmw.myshoppal.R
+import br.com.xpmw.myshoppal.firestore.FiresotoreClass
+import br.com.xpmw.myshoppal.model.User
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
@@ -38,7 +41,7 @@ class RegisterActivity : BaseActivity() {
             setDisplayHomeAsUpEnabled(true)
             setHomeAsUpIndicator(R.drawable.ic_baseline_color_black_24)
         }
-        
+
         toolbar_register_activity.setNavigationOnClickListener { onBackPressed() }
     }
 
@@ -124,23 +127,38 @@ class RegisterActivity : BaseActivity() {
             FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(
                     OnCompleteListener<AuthResult> { task ->
-                        hideProgressDialog()
                         if (task.isSuccessful) {
+
                             val firebaseUser: FirebaseUser = task.result!!.user!!
 
-                            showErrorSnackBar(
-                                "You are registered successfully. Your user id is ${firebaseUser.uid}",
-                                false
+                            val user = User(
+                                firebaseUser.uid,
+                                et_first_name.text.toString().trim() { it <= ' ' },
+                                et_last_name.text.toString().trim() { it <= ' ' },
+                                et_email.text.toString().trim() { it <= ' ' }
                             )
-                            FirebaseAuth.getInstance().signOut()
-                            finish()
+
+                            FiresotoreClass().registerUser(this@RegisterActivity, user)
+
+                            //FirebaseAuth.getInstance().signOut()
+                            //finish()
 
                         } else {
+                            hideProgressDialog()
                             showErrorSnackBar(task.exception!!.message.toString(), true)
                         }
                     }
                 )
         }
+    }
+
+    fun userRegistrationSuccess() {
+        hideProgressDialog()
+        Toast.makeText(
+            this@RegisterActivity,
+            resources.getString(R.string.register_successfully),
+            Toast.LENGTH_SHORT
+        ).show()
     }
 
 }

@@ -1,6 +1,5 @@
 package br.com.xpmw.myshoppal.activities
 
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
@@ -8,7 +7,7 @@ import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.Toast
 import br.com.xpmw.myshoppal.R
-import br.com.xpmw.myshoppal.firestore.FiresotoreClass
+import br.com.xpmw.myshoppal.firestore.FirestoreClass
 import br.com.xpmw.myshoppal.model.User
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.AuthResult
@@ -138,7 +137,7 @@ class RegisterActivity : BaseActivity() {
                                 et_email.text.toString().trim() { it <= ' ' }
                             )
 
-                            FiresotoreClass().registerUser(this@RegisterActivity, user)
+                            FirestoreClass().registerUser(this@RegisterActivity, user)
 
                             //FirebaseAuth.getInstance().signOut()
                             //finish()
@@ -159,6 +158,8 @@ class RegisterActivity : BaseActivity() {
             resources.getString(R.string.register_successfully),
             Toast.LENGTH_SHORT
         ).show()
+        FirebaseAuth.getInstance().signOut()
+        finish()
     }
 
 }

@@ -34,7 +34,7 @@ class LoginActivity : BaseActivity() {
         }
     }
 
-    private fun optionClick(){
+    private fun optionClick() {
         tv_forgot_password.setOnClickListener {
             val intent = Intent(this@LoginActivity, ForgotPasswordActivity::class.java)
             startActivity(intent)
@@ -84,14 +84,19 @@ class LoginActivity : BaseActivity() {
         }
     }
 
-    fun userLoggedInSuccess(user: User){
+    fun userLoggedInSuccess(user: User) {
         hideProgressDialog()
 
         Log.i("First Name: ", user.firstName)
         Log.i("Last Name: ", user.lastName)
         Log.i("Email: ", user.email)
 
-        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+        if (user.profileCpmpleted == 0) {
+            val intent = Intent(this@LoginActivity, UserProfileActivity::class.java)
+            startActivity(intent)
+        } else {
+            startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+        }
         finish()
     }
 }

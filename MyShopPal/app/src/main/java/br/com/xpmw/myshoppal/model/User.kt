@@ -2,7 +2,7 @@ package br.com.xpmw.myshoppal.model
 
 class User (
     val id: String = "",
-    val firtName: String = "",
+    val firstName: String = "",
     val lastName: String = "",
     val email: String = "",
     val image: String = "",

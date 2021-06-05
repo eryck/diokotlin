@@ -1,10 +1,15 @@
 package br.com.xpmw.myshoppal.firestore
 
+import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
+import android.content.SharedPreferences
 import android.util.Log
 import br.com.xpmw.myshoppal.activities.LoginActivity
 import br.com.xpmw.myshoppal.activities.RegisterActivity
 import br.com.xpmw.myshoppal.model.User
+import br.com.xpmw.myshoppal.utils.Constants.LOGGED_IN_USERNAME
+import br.com.xpmw.myshoppal.utils.Constants.MYSHOPPAL_PREFERENCES
 import br.com.xpmw.myshoppal.utils.Constants.USERS
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -45,6 +50,20 @@ class FirestoreClass {
                 Log.i(activity.javaClass.simpleName, document.toString())
 
                 val user = document.toObject(User::class.java)!!
+
+                val sharedPreferences = activity.getSharedPreferences(
+                    MYSHOPPAL_PREFERENCES,
+                    Context.MODE_PRIVATE
+                )
+
+                val editor: SharedPreferences.Editor = sharedPreferences.edit()
+                //Key: logged_in_username
+                //Value: first name and last name
+                editor.putString(
+                    LOGGED_IN_USERNAME,
+                    "${user.firstName} ${user.lastName}"
+                )
+                editor.apply()
 
                 when (activity) {
                     is LoginActivity -> {

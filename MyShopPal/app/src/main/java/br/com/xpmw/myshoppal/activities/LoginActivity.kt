@@ -10,6 +10,7 @@ import android.view.WindowManager
 import br.com.xpmw.myshoppal.R
 import br.com.xpmw.myshoppal.firestore.FirestoreClass
 import br.com.xpmw.myshoppal.model.User
+import br.com.xpmw.myshoppal.utils.Constants.EXTRA_USER_DETAILS
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_login.*
 
@@ -93,6 +94,7 @@ class LoginActivity : BaseActivity() {
 
         if (user.profileCpmpleted == 0) {
             val intent = Intent(this@LoginActivity, UserProfileActivity::class.java)
+            intent.putExtra(EXTRA_USER_DETAILS, user)
             startActivity(intent)
         } else {
             startActivity(Intent(this@LoginActivity, MainActivity::class.java))

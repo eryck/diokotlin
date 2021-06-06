@@ -10,7 +10,7 @@ class User (
     val lastName: String = "",
     val email: String = "",
     val image: String = "",
-    val moblie: Long = 0,
+    val mobile: Long = 0,
     val gender: String = "",
     val profileCpmpleted: Int = 0
 ): Parcelable

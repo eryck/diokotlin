@@ -4,7 +4,6 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
@@ -13,9 +12,14 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import br.com.xpmw.myshoppal.R
+import br.com.xpmw.myshoppal.firestore.FirestoreClass
 import br.com.xpmw.myshoppal.model.User
 import br.com.xpmw.myshoppal.utils.Constants
 import br.com.xpmw.myshoppal.utils.Constants.EXTRA_USER_DETAILS
+import br.com.xpmw.myshoppal.utils.Constants.FEMALE
+import br.com.xpmw.myshoppal.utils.Constants.GENDER
+import br.com.xpmw.myshoppal.utils.Constants.MALE
+import br.com.xpmw.myshoppal.utils.Constants.MOBILE
 import br.com.xpmw.myshoppal.utils.Constants.PICK_IMAGE_REQUEST_CODE
 import br.com.xpmw.myshoppal.utils.Constants.READ_STORAGE_PERMISSION_CODE
 import br.com.xpmw.myshoppal.utils.Constants.showImageChooser
@@ -24,21 +28,24 @@ import kotlinx.android.synthetic.main.activity_user_profile.*
 import java.io.IOException
 
 class UserProfileActivity : BaseActivity(), View.OnClickListener {
+
+    private lateinit var mUserDatails: User
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_profile)
 
-        var userDatails: User = User()
+
         if (intent.hasExtra(EXTRA_USER_DETAILS)) {
-            userDatails = intent.getParcelableExtra(EXTRA_USER_DETAILS)!!
+            mUserDatails = intent.getParcelableExtra(EXTRA_USER_DETAILS)!!
         }
 
         et_first_name.isEnabled = false
-        et_first_name.setText(userDatails.firstName)
+        et_first_name.setText(mUserDatails.firstName)
         et_last_name.isEnabled = false
-        et_last_name.setText(userDatails.lastName)
+        et_last_name.setText(mUserDatails.lastName)
         et_email.isEnabled = false
-        et_email.setText(userDatails.email)
+        et_email.setText(mUserDatails.email)
 
         iv_user_photo.setOnClickListener(this@UserProfileActivity)
         btn_submit.setOnClickListener(this)
@@ -66,11 +73,34 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
 
                 R.id.btn_submit -> {
                     if (validationUserProfileDetails()){
-                        showErrorSnackBar("Your details are valid. You can update them", false)
+                        val userHashMap = HashMap<String, Any>()
+                        val mobileNumber = et_mobile_number.text.toString().trim() {it <= ' '}
+                        val gender = if(rb_male.isSelected){
+                            MALE
+                        }else{
+                            FEMALE
+                        }
+                        if (mobileNumber.isNotEmpty()){
+                            userHashMap[MOBILE] = mobileNumber.toLong()
+                        }
+                        userHashMap[GENDER] = gender
+
+                        showProgressDialog(resources.getString(R.string.please_wait))
+
+                        FirestoreClass().updateUserProfileData(this, userHashMap)
+                        //showErrorSnackBar("Your details are valid. You can update them", false)
                     }
                 }
             }
         }
+    }
+
+    fun userProfileUpdateSuccess(){
+        hideProgressDialog()
+        Toast.makeText(this, resources.getString(R.string.msg_profile_update_success), Toast.LENGTH_SHORT).show()
+
+        startActivity(Intent(this, MainActivity::class.java))
+        finish()
     }
 
     override fun onRequestPermissionsResult(

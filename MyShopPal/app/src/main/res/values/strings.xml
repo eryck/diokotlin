@@ -43,4 +43,6 @@
 
     <string name="read_storage_permission_denied">Oops, you just denied the permission for storage. Tou can also allow it from settings</string>
     <string name="image_selection_failed">Image selection Falied!</string>
+
+    <string name="err_msg_enter_mobile_number">Please enter mobile number</string>
 </resources>

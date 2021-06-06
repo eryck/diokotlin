@@ -19,6 +19,10 @@ class LoginActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+        //TODO Remove set Login after complete application
+        et_mail.setText("eryckknl@gmail.com")
+        et_password.setText("123qwe")
+
         setUpFullScreen()
         optionClick()
     }

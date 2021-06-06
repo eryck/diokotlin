@@ -17,6 +17,7 @@ import br.com.xpmw.myshoppal.utils.Constants.EXTRA_USER_DETAILS
 import br.com.xpmw.myshoppal.utils.Constants.PICK_IMAGE_REQUEST_CODE
 import br.com.xpmw.myshoppal.utils.Constants.READ_STORAGE_PERMISSION_CODE
 import br.com.xpmw.myshoppal.utils.Constants.showImageChooser
+import br.com.xpmw.myshoppal.utils.GliderLoader
 import kotlinx.android.synthetic.main.activity_user_profile.*
 import java.io.IOException
 
@@ -86,7 +87,8 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
                 if (data != null){
                     try{
                         val selectedImageFireUri = data.data!!
-                        iv_user_photo.setImageURI(selectedImageFireUri)
+                        //iv_user_photo.setImageURI(selectedImageFireUri)
+                        GliderLoader(this).loadUserPicture(selectedImageFireUri, iv_user_photo)
                     }catch (e: IOException){
                         e.printStackTrace()
                         Toast.makeText(this, resources.getString(R.string.image_selection_failed), Toast.LENGTH_SHORT).show()

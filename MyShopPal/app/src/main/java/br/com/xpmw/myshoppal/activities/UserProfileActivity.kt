@@ -1,7 +1,10 @@
 package br.com.xpmw.myshoppal.activities
 
 import android.Manifest
+import android.app.Activity
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -11,8 +14,11 @@ import br.com.xpmw.myshoppal.R
 import br.com.xpmw.myshoppal.model.User
 import br.com.xpmw.myshoppal.utils.Constants
 import br.com.xpmw.myshoppal.utils.Constants.EXTRA_USER_DETAILS
+import br.com.xpmw.myshoppal.utils.Constants.PICK_IMAGE_REQUEST_CODE
 import br.com.xpmw.myshoppal.utils.Constants.READ_STORAGE_PERMISSION_CODE
+import br.com.xpmw.myshoppal.utils.Constants.showImageChooser
 import kotlinx.android.synthetic.main.activity_user_profile.*
+import java.io.IOException
 
 class UserProfileActivity : BaseActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,7 +49,8 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
                         )
                         == PackageManager.PERMISSION_GRANTED
                     ) {
-                        showErrorSnackBar("You already have the storage permission", false)
+                        //showErrorSnackBar("You already have the storage permission", false)
+                        showImageChooser(this)
                     } else {
                         ActivityCompat.requestPermissions(
                             this,
@@ -64,10 +71,29 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == READ_STORAGE_PERMISSION_CODE){
             if (grantResults.isEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                showErrorSnackBar("The storage permission is granted", false)
+                //showErrorSnackBar("The storage permission is granted", false)
+                showImageChooser(this)
             }else{
                 Toast.makeText(this, resources.getString(R.string.read_storage_permission_denied), Toast.LENGTH_LONG).show()
             }
         }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK){
+            if (requestCode == PICK_IMAGE_REQUEST_CODE){
+                if (data != null){
+                    try{
+                        val selectedImageFireUri = data.data!!
+                        iv_user_photo.setImageURI(selectedImageFireUri)
+                    }catch (e: IOException){
+                        e.printStackTrace()
+                        Toast.makeText(this, resources.getString(R.string.image_selection_failed), Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+
     }
 }

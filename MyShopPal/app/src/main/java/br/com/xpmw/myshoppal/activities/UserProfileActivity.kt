@@ -19,6 +19,7 @@ import br.com.xpmw.myshoppal.utils.Constants
 import br.com.xpmw.myshoppal.utils.Constants.EXTRA_USER_DETAILS
 import br.com.xpmw.myshoppal.utils.Constants.FEMALE
 import br.com.xpmw.myshoppal.utils.Constants.GENDER
+import br.com.xpmw.myshoppal.utils.Constants.IMAGE
 import br.com.xpmw.myshoppal.utils.Constants.MALE
 import br.com.xpmw.myshoppal.utils.Constants.MOBILE
 import br.com.xpmw.myshoppal.utils.Constants.PICK_IMAGE_REQUEST_CODE
@@ -30,9 +31,9 @@ import java.io.IOException
 
 class UserProfileActivity : BaseActivity(), View.OnClickListener {
 
-    private lateinit var mUserDatails: User
-
+    private lateinit var mUserDetails: User
     private var mSelectedImageFileUri: Uri? = null
+    private var mUserProfileImageURL: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,15 +41,15 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
 
 
         if (intent.hasExtra(EXTRA_USER_DETAILS)) {
-            mUserDatails = intent.getParcelableExtra(EXTRA_USER_DETAILS)!!
+            mUserDetails = intent.getParcelableExtra(EXTRA_USER_DETAILS)!!
         }
 
         et_first_name.isEnabled = false
-        et_first_name.setText(mUserDatails.firstName)
+        et_first_name.setText(mUserDetails.firstName)
         et_last_name.isEnabled = false
-        et_last_name.setText(mUserDatails.lastName)
+        et_last_name.setText(mUserDetails.lastName)
         et_email.isEnabled = false
-        et_email.setText(mUserDatails.email)
+        et_email.setText(mUserDetails.email)
 
         iv_user_photo.setOnClickListener(this@UserProfileActivity)
         btn_submit.setOnClickListener(this)
@@ -75,37 +76,50 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
                 }
 
                 R.id.btn_submit -> {
-
-                    showProgressDialog(resources.getString(R.string.please_wait))
-                    FirestoreClass().uploadImageToCloudStorage(this, mSelectedImageFileUri)
-                    /*
-                    if (validationUserProfileDetails()){
-                        val userHashMap = HashMap<String, Any>()
-                        val mobileNumber = et_mobile_number.text.toString().trim() {it <= ' '}
-                        val gender = if(rb_male.isSelected){
-                            MALE
-                        }else{
-                            FEMALE
-                        }
-                        if (mobileNumber.isNotEmpty()){
-                            userHashMap[MOBILE] = mobileNumber.toLong()
-                        }
-                        userHashMap[GENDER] = gender
-
+                    if (validationUserProfileDetails()) {
                         showProgressDialog(resources.getString(R.string.please_wait))
-
-                        FirestoreClass().updateUserProfileData(this, userHashMap)
-                        //showErrorSnackBar("Your details are valid. You can update them", false)
+                        if (mSelectedImageFileUri != null)
+                            FirestoreClass().uploadImageToCloudStorage(this, mSelectedImageFileUri)
+                        else{
+                            updateUserProfileDetails()
+                        }
                     }
-                    */
                 }
             }
         }
     }
 
-    fun userProfileUpdateSuccess(){
+    private fun updateUserProfileDetails() {
+
+        val userHashMap = HashMap<String, Any>()
+        val mobileNumber = et_mobile_number.text.toString().trim() { it <= ' ' }
+        val gender = if (rb_male.isSelected) {
+            MALE
+        } else {
+            FEMALE
+        }
+        if (mobileNumber.isNotEmpty()) {
+            userHashMap[MOBILE] = mobileNumber.toLong()
+        }
+
+        if (mUserProfileImageURL.isNotEmpty()) {
+            userHashMap[IMAGE] = mUserProfileImageURL
+        }
+        userHashMap[GENDER] = gender
+
+        //showProgressDialog(resources.getString(R.string.please_wait))
+
+        FirestoreClass().updateUserProfileData(this, userHashMap)
+        //showErrorSnackBar("Your details are valid. You can update them", false)
+    }
+
+    fun userProfileUpdateSuccess() {
         hideProgressDialog()
-        Toast.makeText(this, resources.getString(R.string.msg_profile_update_success), Toast.LENGTH_SHORT).show()
+        Toast.makeText(
+            this,
+            resources.getString(R.string.msg_profile_update_success),
+            Toast.LENGTH_SHORT
+        ).show()
 
         startActivity(Intent(this, MainActivity::class.java))
         finish()
@@ -137,7 +151,7 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
             if (requestCode == PICK_IMAGE_REQUEST_CODE) {
                 if (data != null) {
                     try {
-                        mSelectedImageFileUri= data.data!!
+                        mSelectedImageFileUri = data.data!!
                         //iv_user_photo.setImageURI(selectedImageFireUri)
                         GliderLoader(this).loadUserPicture(mSelectedImageFileUri!!, iv_user_photo)
                     } catch (e: IOException) {
@@ -167,9 +181,11 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-    fun imageUploadSuccess(imageURL: String){
+    fun imageUploadSuccess(imageURL: String) {
         hideProgressDialog()
-        Toast.makeText(this, "Your image is upload successfully. Image URL is $imageURL", Toast.LENGTH_SHORT).show()
+        //Toast.makeText(this, "Your image is upload successfully. Image URL is $imageURL", Toast.LENGTH_SHORT).show()
+        mUserProfileImageURL = imageURL
+        updateUserProfileDetails()
     }
 
 }

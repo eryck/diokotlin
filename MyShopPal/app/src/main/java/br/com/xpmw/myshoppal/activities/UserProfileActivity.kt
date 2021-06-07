@@ -16,6 +16,7 @@ import br.com.xpmw.myshoppal.R
 import br.com.xpmw.myshoppal.firestore.FirestoreClass
 import br.com.xpmw.myshoppal.model.User
 import br.com.xpmw.myshoppal.utils.Constants
+import br.com.xpmw.myshoppal.utils.Constants.COMPLETE_PROFILE
 import br.com.xpmw.myshoppal.utils.Constants.EXTRA_USER_DETAILS
 import br.com.xpmw.myshoppal.utils.Constants.FEMALE
 import br.com.xpmw.myshoppal.utils.Constants.GENDER
@@ -105,8 +106,10 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
         if (mUserProfileImageURL.isNotEmpty()) {
             userHashMap[IMAGE] = mUserProfileImageURL
         }
+
         userHashMap[GENDER] = gender
 
+        userHashMap[COMPLETE_PROFILE] = 1
         //showProgressDialog(resources.getString(R.string.please_wait))
 
         FirestoreClass().updateUserProfileData(this, userHashMap)

@@ -5,9 +5,9 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.net.Uri
 import android.util.Log
-import br.com.xpmw.myshoppal.activities.LoginActivity
-import br.com.xpmw.myshoppal.activities.RegisterActivity
-import br.com.xpmw.myshoppal.activities.UserProfileActivity
+import br.com.xpmw.myshoppal.ui.activities.LoginActivity
+import br.com.xpmw.myshoppal.ui.activities.RegisterActivity
+import br.com.xpmw.myshoppal.ui.activities.UserProfileActivity
 import br.com.xpmw.myshoppal.model.User
 import br.com.xpmw.myshoppal.utils.Constants.LOGGED_IN_USERNAME
 import br.com.xpmw.myshoppal.utils.Constants.MYSHOPPAL_PREFERENCES

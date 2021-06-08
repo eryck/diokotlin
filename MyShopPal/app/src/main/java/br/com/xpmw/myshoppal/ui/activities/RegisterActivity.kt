@@ -1,4 +1,4 @@
-package br.com.xpmw.myshoppal.activities
+package br.com.xpmw.myshoppal.ui.activities
 
 import android.os.Build
 import android.os.Bundle

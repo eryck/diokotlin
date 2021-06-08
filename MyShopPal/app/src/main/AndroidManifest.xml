@@ -12,27 +12,27 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyShopPal">
         <activity
-            android:name=".activities.DashboardActivity"
+            android:name="br.com.xpmw.myshoppal.ui.activities.DashboardActivity"
             android:label="@string/app_name"></activity>
         <activity
-            android:name=".activities.UserProfileActivity"
+            android:name="br.com.xpmw.myshoppal.ui.activities.UserProfileActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
         <activity
-            android:name=".activities.ForgotPasswordActivity"
+            android:name="br.com.xpmw.myshoppal.ui.activities.ForgotPasswordActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
-        <activity android:name=".activities.BaseActivity" />
+        <activity android:name="br.com.xpmw.myshoppal.ui.activities.BaseActivity" />
         <activity
-            android:name=".activities.RegisterActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
-        <activity
-            android:name=".activities.LoginActivity"
+            android:name="br.com.xpmw.myshoppal.ui.activities.RegisterActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
         <activity
-            android:name=".activities.SplashActivity"
+            android:name="br.com.xpmw.myshoppal.ui.activities.LoginActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
+        <activity
+            android:name="br.com.xpmw.myshoppal.ui.activities.SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar">
             <intent-filter>
@@ -41,7 +41,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.MainActivity" />
+        <activity android:name="br.com.xpmw.myshoppal.ui.activities.MainActivity" />
     </application>
 
 </manifest>

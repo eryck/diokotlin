@@ -1,4 +1,4 @@
-package br.com.xpmw.myshoppal.activities
+package br.com.xpmw.myshoppal.ui.activities
 
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity

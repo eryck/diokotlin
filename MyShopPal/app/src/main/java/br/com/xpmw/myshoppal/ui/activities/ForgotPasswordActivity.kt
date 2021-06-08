@@ -1,6 +1,5 @@
-package br.com.xpmw.myshoppal.activities
+package br.com.xpmw.myshoppal.ui.activities
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import br.com.xpmw.myshoppal.R

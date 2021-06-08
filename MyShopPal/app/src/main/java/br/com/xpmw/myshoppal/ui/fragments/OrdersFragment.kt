@@ -8,8 +8,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import br.com.xpmw.myshoppal.R
 
-class DashboardFragment : Fragment() {
-
+class OrdersFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -17,10 +16,9 @@ class DashboardFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        val root = inflater.inflate(R.layout.fragment_dashboard, container, false)
-        val textView: TextView = root.findViewById(R.id.text_dashboard)
-
-       textView.text = "This is dashboard Fragment"
+        val root = inflater.inflate(R.layout.fragment_orders, container, false)
+        val textView: TextView = root.findViewById(R.id.text_orders)
+        textView.text = "This is Notification Fragment"
         return root
     }
 

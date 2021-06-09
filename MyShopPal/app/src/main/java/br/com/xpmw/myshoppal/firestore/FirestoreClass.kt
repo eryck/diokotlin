@@ -9,6 +9,7 @@ import br.com.xpmw.myshoppal.ui.activities.LoginActivity
 import br.com.xpmw.myshoppal.ui.activities.RegisterActivity
 import br.com.xpmw.myshoppal.ui.activities.UserProfileActivity
 import br.com.xpmw.myshoppal.model.User
+import br.com.xpmw.myshoppal.ui.activities.SettingsActivity
 import br.com.xpmw.myshoppal.utils.Constants.LOGGED_IN_USERNAME
 import br.com.xpmw.myshoppal.utils.Constants.MYSHOPPAL_PREFERENCES
 import br.com.xpmw.myshoppal.utils.Constants.USERS
@@ -74,11 +75,17 @@ class FirestoreClass {
                     is LoginActivity -> {
                         activity.userLoggedInSuccess(user)
                     }
+                    is SettingsActivity -> {
+                        activity.userDetailsSuccess(user)
+                    }
                 }
             }
             .addOnFailureListener { e ->
                 when (activity) {
                     is LoginActivity -> {
+                        activity.hideProgressDialog()
+                    }
+                    is SettingsActivity -> {
                         activity.hideProgressDialog()
                     }
                 }
@@ -115,7 +122,7 @@ class FirestoreClass {
             USER_PROFILE_IMAGE + System.currentTimeMillis() + "."
                     + getFileExtension(activity, imageFileUri)
         )
-        sRef.putFile(imageFileUri!!).addOnSuccessListener{ taskSnapshot ->
+        sRef.putFile(imageFileUri!!).addOnSuccessListener { taskSnapshot ->
             //The image upload is success
             Log.e(
                 "Firebase Image URL",
@@ -124,7 +131,7 @@ class FirestoreClass {
             //Get the download url from the task snapshot
             taskSnapshot.metadata!!.reference!!.downloadUrl.addOnSuccessListener { uri ->
                 Log.e("Donwload Image URL", uri.toString())
-                when(activity){
+                when (activity) {
                     is UserProfileActivity -> {
                         activity.imageUploadSuccess(uri.toString())
                     }
@@ -132,7 +139,7 @@ class FirestoreClass {
             }
         }
             .addOnFailureListener { exception ->
-                when(activity){
+                when (activity) {
                     is UserProfileActivity -> {
                         activity.hideProgressDialog()
                     }

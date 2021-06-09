@@ -60,5 +60,6 @@
     <string name="lbl_addresses">Addresses</string>
     <string name="btn_lbl_logout">Logout</string>
     <string name="title_edit_profile">EDIT PROFILE</string>
+    <string name="action_add_product">Add Product</string>
 
 </resources>

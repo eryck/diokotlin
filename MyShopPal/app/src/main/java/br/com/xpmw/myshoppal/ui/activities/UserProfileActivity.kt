@@ -94,7 +94,7 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
 
         val userHashMap = HashMap<String, Any>()
         val mobileNumber = et_mobile_number.text.toString().trim() { it <= ' ' }
-        val gender = if (rb_male.isSelected) {
+        val gender = if (rb_male.isChecked) {
             MALE
         } else {
             FEMALE

@@ -54,6 +54,10 @@
             android:layout_below="@id/fl_header_bg"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/settings_user_image_marginTop">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/user_image_background" />
 
             <ImageView
                 android:id="@+id/iv_user_photo"
@@ -64,10 +68,7 @@
                 android:scaleType="fitXY"
                 android:src="@drawable/ic_user_placeholder" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/user_image_background" />
+
         </FrameLayout>
 
         <TextView

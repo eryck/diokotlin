@@ -19,8 +19,10 @@ import br.com.xpmw.myshoppal.utils.Constants
 import br.com.xpmw.myshoppal.utils.Constants.COMPLETE_PROFILE
 import br.com.xpmw.myshoppal.utils.Constants.EXTRA_USER_DETAILS
 import br.com.xpmw.myshoppal.utils.Constants.FEMALE
+import br.com.xpmw.myshoppal.utils.Constants.FIRST_NAME
 import br.com.xpmw.myshoppal.utils.Constants.GENDER
 import br.com.xpmw.myshoppal.utils.Constants.IMAGE
+import br.com.xpmw.myshoppal.utils.Constants.LAST_NAME
 import br.com.xpmw.myshoppal.utils.Constants.MALE
 import br.com.xpmw.myshoppal.utils.Constants.MOBILE
 import br.com.xpmw.myshoppal.utils.Constants.PICK_IMAGE_REQUEST_CODE
@@ -40,20 +42,53 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_profile)
 
-
         if (intent.hasExtra(EXTRA_USER_DETAILS)) {
             mUserDetails = intent.getParcelableExtra(EXTRA_USER_DETAILS)!!
         }
 
-        et_first_name.isEnabled = false
         et_first_name.setText(mUserDetails.firstName)
-        et_last_name.isEnabled = false
         et_last_name.setText(mUserDetails.lastName)
         et_email.isEnabled = false
         et_email.setText(mUserDetails.email)
 
+        if (mUserDetails.profileCompleted == 0) {
+            tv_title.text = resources.getString(R.string.title_complete_profile)
+            et_first_name.isEnabled = false
+            et_last_name.isEnabled = false
+
+
+        } else {
+            setupActionBar()
+            tv_title.text = resources.getString(R.string.title_edit_profile)
+            GliderLoader(this).loadUserPicture(mUserDetails.image, iv_user_photo)
+
+            et_email.isEnabled = false
+            et_email.setText(mUserDetails.email)
+
+            if (mUserDetails.mobile != 0L) {
+                et_mobile_number.setText(mUserDetails.mobile.toString())
+            }
+            if (mUserDetails.gender == Constants.MALE) {
+                rb_male.isChecked = true
+            } else {
+                rb_female.isChecked = true
+            }
+
+        }
+
+
         iv_user_photo.setOnClickListener(this@UserProfileActivity)
         btn_submit.setOnClickListener(this)
+    }
+
+    private fun setupActionBar() {
+        setSupportActionBar(toolbar_user_profile_activity)
+
+        val actionBar = supportActionBar
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true)
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_white_color_back_24dp)
+        }
     }
 
     override fun onClick(v: View?) {
@@ -81,7 +116,7 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
                         showProgressDialog(resources.getString(R.string.please_wait))
                         if (mSelectedImageFileUri != null)
                             FirestoreClass().uploadImageToCloudStorage(this, mSelectedImageFileUri)
-                        else{
+                        else {
                             updateUserProfileDetails()
                         }
                     }
@@ -93,13 +128,25 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
     private fun updateUserProfileDetails() {
 
         val userHashMap = HashMap<String, Any>()
+
+        val firstName = et_first_name.text.toString().trim() { it <= ' ' }
+        if (firstName != mUserDetails.firstName) {
+            userHashMap[FIRST_NAME] = firstName
+        }
+
+        val lastName = et_last_name.text.toString().trim() { it <= ' ' }
+        if (lastName != mUserDetails.lastName) {
+            userHashMap[LAST_NAME] = lastName
+        }
+
         val mobileNumber = et_mobile_number.text.toString().trim() { it <= ' ' }
+
         val gender = if (rb_male.isChecked) {
             MALE
         } else {
             FEMALE
         }
-        if (mobileNumber.isNotEmpty()) {
+        if (mobileNumber.isNotEmpty() && mobileNumber != mUserDetails.mobile.toString()) {
             userHashMap[MOBILE] = mobileNumber.toLong()
         }
 
@@ -107,7 +154,9 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
             userHashMap[IMAGE] = mUserProfileImageURL
         }
 
-        userHashMap[GENDER] = gender
+        if (gender.isNotEmpty() && gender != mUserDetails.gender) {
+            userHashMap[GENDER] = gender
+        }
 
         userHashMap[COMPLETE_PROFILE] = 1
         //showProgressDialog(resources.getString(R.string.please_wait))

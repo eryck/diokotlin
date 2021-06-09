@@ -17,7 +17,8 @@ object Constants {
 
     const val MALE: String = "male"
     const val FEMALE: String = "female"
-
+    const val FIRST_NAME: String = "firstName"
+    const val LAST_NAME: String = "lastName"
     const val MOBILE: String = "mobile"
     const val GENDER: String = "gender"
     const val IMAGE: String = "image"
@@ -25,7 +26,7 @@ object Constants {
 
     const val USER_PROFILE_IMAGE: String = "user_profile_image"
 
-    fun showImageChooser(activity: Activity){
+    fun showImageChooser(activity: Activity) {
         val galleryIntent = Intent(
             Intent.ACTION_PICK,
             MediaStore.Images.Media.EXTERNAL_CONTENT_URI
@@ -33,7 +34,8 @@ object Constants {
         activity.startActivityForResult(galleryIntent, PICK_IMAGE_REQUEST_CODE)
     }
 
-    fun getFileExtension(activity: Activity, uri: Uri?): String?{
-        return MimeTypeMap.getSingleton().getExtensionFromMimeType(activity.contentResolver.getType(uri!!))
+    fun getFileExtension(activity: Activity, uri: Uri?): String? {
+        return MimeTypeMap.getSingleton()
+            .getExtensionFromMimeType(activity.contentResolver.getType(uri!!))
     }
 }

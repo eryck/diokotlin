@@ -89,6 +89,8 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
             actionBar.setDisplayHomeAsUpEnabled(true)
             actionBar.setHomeAsUpIndicator(R.drawable.ic_white_color_back_24dp)
         }
+
+        toolbar_user_profile_activity.setNavigationOnClickListener { onBackPressed() }
     }
 
     override fun onClick(v: View?) {

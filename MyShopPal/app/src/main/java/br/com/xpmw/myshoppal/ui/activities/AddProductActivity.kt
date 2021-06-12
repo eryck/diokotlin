@@ -4,8 +4,10 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -18,13 +20,17 @@ import kotlinx.android.synthetic.main.activity_add_product.*
 import kotlinx.android.synthetic.main.activity_user_profile.*
 import java.io.IOException
 
-class AddProductActivity : AppCompatActivity(), View.OnClickListener {
+class AddProductActivity : BaseActivity(), View.OnClickListener {
+
+    private var mSelectedImageFileURI: Uri? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_product)
 
         setupActionBar()
         iv_add_update_product.setOnClickListener(this)
+        btn_submit_add_product.setOnClickListener(this)
     }
 
     private fun setupActionBar() {
@@ -61,6 +67,12 @@ class AddProductActivity : AppCompatActivity(), View.OnClickListener {
                         )
                     }
                 }
+
+                R.id.btn_submit_add_product -> {
+                    if(validateProductDetails()){
+                        showErrorSnackBar("Your product details are valid.", false)
+                    }
+                }
             }
         }
     }
@@ -91,10 +103,10 @@ class AddProductActivity : AppCompatActivity(), View.OnClickListener {
                 if (data != null) {
                    iv_add_update_product.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_vector_edit))
 
-                    val selectedImageFileURI = data.data!!
+                    mSelectedImageFileURI = data.data!!
 
                     try {
-                        GliderLoader(this).loadUserPicture(selectedImageFileURI, iv_product_image)
+                        GliderLoader(this).loadUserPicture(mSelectedImageFileURI!!, iv_product_image)
                     }catch (e: IOException){
                         e.printStackTrace()
                         Toast.makeText(this, getString(R.string.image_selection_failed), Toast.LENGTH_SHORT).show()
@@ -103,6 +115,34 @@ class AddProductActivity : AppCompatActivity(), View.OnClickListener {
             }
         } else if (resultCode == Activity.RESULT_CANCELED) {
             Log.e("Request Cancelled", "Image selection cancelled")
+        }
+    }
+
+    private fun validateProductDetails(): Boolean{
+        return when{
+            mSelectedImageFileURI == null ->{
+                showErrorSnackBar(resources.getString(R.string.err_msg_select_product_image), true)
+                false
+            }
+            TextUtils.isEmpty(et_product_title.text.toString().trim(){it <= ' '}) -> {
+                showErrorSnackBar(resources.getString(R.string.err_msg_enter_product_title), true)
+                false
+            }
+            TextUtils.isEmpty(et_product_price.text.toString().trim(){it <= ' '}) -> {
+                showErrorSnackBar(resources.getString(R.string.err_msg_enter_product_price), true)
+                false
+            }
+            TextUtils.isEmpty(et_product_description.text.toString().trim(){it <= ' '}) -> {
+                showErrorSnackBar(resources.getString(R.string.err_msg_enter_product_description), true)
+                false
+            }
+            TextUtils.isEmpty(et_product_quantity.text.toString().trim(){it <= ' '}) -> {
+                showErrorSnackBar(resources.getString(R.string.err_msg_enter_product_quantity), true)
+                false
+            }
+            else -> {
+                true
+            }
         }
     }
 

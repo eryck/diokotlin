@@ -27,6 +27,7 @@ import br.com.xpmw.myshoppal.utils.Constants.MALE
 import br.com.xpmw.myshoppal.utils.Constants.MOBILE
 import br.com.xpmw.myshoppal.utils.Constants.PICK_IMAGE_REQUEST_CODE
 import br.com.xpmw.myshoppal.utils.Constants.READ_STORAGE_PERMISSION_CODE
+import br.com.xpmw.myshoppal.utils.Constants.USER_PROFILE_IMAGE
 import br.com.xpmw.myshoppal.utils.Constants.showImageChooser
 import br.com.xpmw.myshoppal.utils.GliderLoader
 import kotlinx.android.synthetic.main.activity_user_profile.*
@@ -117,7 +118,7 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
                     if (validationUserProfileDetails()) {
                         showProgressDialog(resources.getString(R.string.please_wait))
                         if (mSelectedImageFileUri != null)
-                            FirestoreClass().uploadImageToCloudStorage(this, mSelectedImageFileUri)
+                            FirestoreClass().uploadImageToCloudStorage(this, mSelectedImageFileUri, USER_PROFILE_IMAGE)
                         else {
                             updateUserProfileDetails()
                         }

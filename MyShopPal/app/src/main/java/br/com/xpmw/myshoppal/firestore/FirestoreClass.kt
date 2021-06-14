@@ -5,11 +5,8 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.net.Uri
 import android.util.Log
-import br.com.xpmw.myshoppal.ui.activities.LoginActivity
-import br.com.xpmw.myshoppal.ui.activities.RegisterActivity
-import br.com.xpmw.myshoppal.ui.activities.UserProfileActivity
 import br.com.xpmw.myshoppal.model.User
-import br.com.xpmw.myshoppal.ui.activities.SettingsActivity
+import br.com.xpmw.myshoppal.ui.activities.*
 import br.com.xpmw.myshoppal.utils.Constants.LOGGED_IN_USERNAME
 import br.com.xpmw.myshoppal.utils.Constants.MYSHOPPAL_PREFERENCES
 import br.com.xpmw.myshoppal.utils.Constants.USERS
@@ -104,7 +101,7 @@ class FirestoreClass {
                     }
                 }
             }
-            .addOnFailureListener { e ->
+            .addOnFailureListener {
                 when (activity) {
                     is UserProfileActivity -> {
                         activity.hideProgressDialog()
@@ -117,9 +114,9 @@ class FirestoreClass {
             }
     }
 
-    fun uploadImageToCloudStorage(activity: Activity, imageFileUri: Uri?) {
+    fun uploadImageToCloudStorage(activity: Activity, imageFileUri: Uri?, imageType: String) {
         val sRef: StorageReference = FirebaseStorage.getInstance().reference.child(
-            USER_PROFILE_IMAGE + System.currentTimeMillis() + "."
+            imageType + System.currentTimeMillis() + "."
                     + getFileExtension(activity, imageFileUri)
         )
         sRef.putFile(imageFileUri!!).addOnSuccessListener { taskSnapshot ->
@@ -130,9 +127,12 @@ class FirestoreClass {
             )
             //Get the download url from the task snapshot
             taskSnapshot.metadata!!.reference!!.downloadUrl.addOnSuccessListener { uri ->
-                Log.e("Donwload Image URL", uri.toString())
+                Log.e("Download Image URL", uri.toString())
                 when (activity) {
                     is UserProfileActivity -> {
+                        activity.imageUploadSuccess(uri.toString())
+                    }
+                    is AddProductActivity -> {
                         activity.imageUploadSuccess(uri.toString())
                     }
                 }
@@ -141,6 +141,9 @@ class FirestoreClass {
             .addOnFailureListener { exception ->
                 when (activity) {
                     is UserProfileActivity -> {
+                        activity.hideProgressDialog()
+                    }
+                    is AddProductActivity -> {
                         activity.hideProgressDialog()
                     }
                 }

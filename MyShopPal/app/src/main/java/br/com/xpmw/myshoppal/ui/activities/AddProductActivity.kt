@@ -5,7 +5,6 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
@@ -14,10 +13,11 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import br.com.xpmw.myshoppal.R
+import br.com.xpmw.myshoppal.firestore.FirestoreClass
 import br.com.xpmw.myshoppal.utils.Constants
+import br.com.xpmw.myshoppal.utils.Constants.PRODUCT_IMAGE
 import br.com.xpmw.myshoppal.utils.GliderLoader
 import kotlinx.android.synthetic.main.activity_add_product.*
-import kotlinx.android.synthetic.main.activity_user_profile.*
 import java.io.IOException
 
 class AddProductActivity : BaseActivity(), View.OnClickListener {
@@ -70,12 +70,24 @@ class AddProductActivity : BaseActivity(), View.OnClickListener {
 
                 R.id.btn_submit_add_product -> {
                     if(validateProductDetails()){
-                        showErrorSnackBar("Your product details are valid.", false)
+                        uploadProductImage()
                     }
                 }
             }
         }
     }
+
+    private fun uploadProductImage(){
+        showProgressDialog(resources.getString(R.string.please_wait))
+        FirestoreClass().uploadImageToCloudStorage(this, mSelectedImageFileURI, PRODUCT_IMAGE)
+    }
+
+    fun imageUploadSuccess(imageURL: String){
+        hideProgressDialog()
+
+        showErrorSnackBar("product image is uploaded successfully. Image URI: $imageURL", false)
+    }
+
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,

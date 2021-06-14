@@ -5,10 +5,12 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.net.Uri
 import android.util.Log
+import br.com.xpmw.myshoppal.model.Product
 import br.com.xpmw.myshoppal.model.User
 import br.com.xpmw.myshoppal.ui.activities.*
 import br.com.xpmw.myshoppal.utils.Constants.LOGGED_IN_USERNAME
 import br.com.xpmw.myshoppal.utils.Constants.MYSHOPPAL_PREFERENCES
+import br.com.xpmw.myshoppal.utils.Constants.PRODUCTS
 import br.com.xpmw.myshoppal.utils.Constants.USERS
 import br.com.xpmw.myshoppal.utils.Constants.USER_PROFILE_IMAGE
 import br.com.xpmw.myshoppal.utils.Constants.getFileExtension
@@ -34,7 +36,7 @@ class FirestoreClass {
             }
     }
 
-    private fun getCurrentUserID(): String {
+    fun getCurrentUserID(): String {
         val currentUser = FirebaseAuth.getInstance().currentUser
 
         var currentUserID = ""
@@ -154,4 +156,22 @@ class FirestoreClass {
                 )
             }
     }
+
+    fun uploadProductDetails(activity: AddProductActivity, productInfo: Product){
+        mFirestore.collection(PRODUCTS)
+            .document()
+            .set(productInfo, SetOptions.merge())
+            .addOnSuccessListener {
+                activity.productUploadSuccess()
+            }
+            .addOnFailureListener { e ->
+                activity.hideProgressDialog()
+                Log.e(
+                    activity.javaClass.simpleName,
+                    "Error while uploading the product details.",
+                    e
+                )
+            }
+    }
+
 }

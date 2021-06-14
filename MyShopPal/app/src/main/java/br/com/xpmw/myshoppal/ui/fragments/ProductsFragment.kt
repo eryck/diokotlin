@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import br.com.xpmw.myshoppal.R
 import br.com.xpmw.myshoppal.ui.activities.AddProductActivity
 
-class ProductsFragment : Fragment() {
+class ProductsFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,8 +21,7 @@ class ProductsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val root = inflater.inflate(R.layout.fragment_products, container, false)
-        val textView: TextView = root.findViewById(R.id.text_products)
-        textView.text = "This is Products Fragment"
+
         return root
     }
 

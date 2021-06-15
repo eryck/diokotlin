@@ -2,10 +2,13 @@ package br.com.xpmw.myshoppal.ui.fragments
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import br.com.xpmw.myshoppal.R
+import br.com.xpmw.myshoppal.firestore.FirestoreClass
+import br.com.xpmw.myshoppal.model.Product
 import br.com.xpmw.myshoppal.ui.activities.AddProductActivity
 
 class ProductsFragment : BaseFragment() {
@@ -13,6 +16,23 @@ class ProductsFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+    }
+
+    fun successProductListFromFireStore(productsList: ArrayList<Product>){
+        hideProgressDialog()
+        for (i in productsList){
+            Log.i("Product Name", i.title)
+        }
+    }
+
+    private fun getProductListFromFireStore(){
+        showProgressDialog(resources.getString(R.string.please_wait))
+        FirestoreClass().getProductList(this)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        getProductListFromFireStore()
     }
 
     override fun onCreateView(

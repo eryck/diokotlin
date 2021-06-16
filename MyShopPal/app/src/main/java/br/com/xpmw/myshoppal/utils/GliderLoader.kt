@@ -24,7 +24,8 @@ class GliderLoader(val context: Context) {
     fun loadProductPicture(image: Any, imageView: ImageView) {
         try {
             //Load the user image in the imageView
-            Glide.with(context)
+            Glide
+                .with(context)
                 .load(image)
                 .centerCrop() //Scale type of the image
                 .into(imageView) // the view in which the image will be load

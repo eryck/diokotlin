@@ -2,18 +2,27 @@ package br.com.xpmw.myshoppal.ui.fragments
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import br.com.xpmw.myshoppal.R
+import br.com.xpmw.myshoppal.firestore.FirestoreClass
+import br.com.xpmw.myshoppal.model.Product
 import br.com.xpmw.myshoppal.ui.activities.SettingsActivity
 
-class DashboardFragment : Fragment() {
+class DashboardFragment : BaseFragment() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        getDashboardItemsList()
     }
 
     override fun onCreateView(
@@ -23,9 +32,7 @@ class DashboardFragment : Fragment() {
     ): View? {
 
         val root = inflater.inflate(R.layout.fragment_dashboard, container, false)
-        val textView: TextView = root.findViewById(R.id.text_dashboard)
 
-       textView.text = "This is dashboard Fragment"
         return root
     }
 
@@ -44,6 +51,19 @@ class DashboardFragment : Fragment() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    fun successDashboardItemsList(dashboardItemsList: ArrayList<Product>){
+        hideProgressDialog()
+        for(i in dashboardItemsList){
+            Log.i("Item Title", i.title)
+        }
+    }
+
+    private fun getDashboardItemsList(){
+        showProgressDialog(resources.getString(R.string.please_wait))
+
+        FirestoreClass().getDashboardItemsList(this)
     }
 
 }

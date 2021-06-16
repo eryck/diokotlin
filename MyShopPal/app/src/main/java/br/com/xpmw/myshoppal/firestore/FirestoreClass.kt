@@ -5,10 +5,12 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.net.Uri
 import android.util.Log
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import br.com.xpmw.myshoppal.model.Product
 import br.com.xpmw.myshoppal.model.User
 import br.com.xpmw.myshoppal.ui.activities.*
+import br.com.xpmw.myshoppal.ui.fragments.DashboardFragment
 import br.com.xpmw.myshoppal.ui.fragments.ProductsFragment
 import br.com.xpmw.myshoppal.utils.Constants.LOGGED_IN_USERNAME
 import br.com.xpmw.myshoppal.utils.Constants.MYSHOPPAL_PREFERENCES
@@ -160,7 +162,7 @@ class FirestoreClass {
             }
     }
 
-    fun uploadProductDetails(activity: AddProductActivity, productInfo: Product){
+    fun uploadProductDetails(activity: AddProductActivity, productInfo: Product) {
         mFirestore.collection(PRODUCTS)
             .document()
             .set(productInfo, SetOptions.merge())
@@ -177,26 +179,47 @@ class FirestoreClass {
             }
     }
 
-    fun getProductList(fragment: Fragment){
+    fun getProductList(fragment: Fragment) {
         mFirestore.collection(PRODUCTS)
             .whereEqualTo(USER_ID, getCurrentUserID())
             .get()
             .addOnSuccessListener { document ->
                 Log.e("Product List", document.documents.toString())
                 val productsList: ArrayList<Product> = ArrayList()
-                for(i in document.documents){
+                for (i in document.documents) {
                     val product = i.toObject(Product::class.java)
                     product!!.product_id = i.id
 
                     productsList.add(product)
                 }
 
-                when(fragment){
-                    is ProductsFragment ->{
+                when (fragment) {
+                    is ProductsFragment -> {
                         fragment.successProductListFromFireStore(productsList)
                     }
                 }
 
+            }
+    }
+
+    fun getDashboardItemsList(fragment: DashboardFragment) {
+        mFirestore.collection(PRODUCTS)
+            .get()
+            .addOnSuccessListener { documet ->
+                Log.e(fragment.javaClass.simpleName, documet.documents.toString())
+                val productList: ArrayList<Product> = ArrayList()
+
+                for (i in documet.documents) {
+                    val product = i.toObject(Product::class.java)!!
+                    product.product_id = i.id
+                    productList.add(product)
+                }
+
+                fragment.successDashboardItemsList(productList)
+            }
+            .addOnFailureListener { e ->
+                fragment.hideProgressDialog()
+                Log.e(fragment.javaClass.simpleName, "Error while getting dashboard items list.", e)
             }
     }
 

@@ -33,6 +33,8 @@ object Constants {
 
     const val USER_PROFILE_IMAGE: String = "user_profile_image"
 
+    const val EXTRA_PRODUCT_ID: String = "extra_product_id"
+
     fun showImageChooser(activity: Activity) {
         val galleryIntent = Intent(
             Intent.ACTION_PICK,

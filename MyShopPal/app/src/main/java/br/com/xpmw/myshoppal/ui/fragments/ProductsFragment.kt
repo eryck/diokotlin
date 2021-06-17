@@ -1,5 +1,6 @@
 package br.com.xpmw.myshoppal.ui.fragments
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -24,18 +25,42 @@ class ProductsFragment : BaseFragment() {
         setHasOptionsMenu(true)
     }
 
-    fun deleteProduct(producID: String){
-        Toast.makeText(
-            requireActivity(),
-            "You can now delete the product. $producID",
-            Toast.LENGTH_SHORT
-        ).show()
+    fun deleteProduct(productID: String) {
+        showAlertDialogToDeleteProduct(productID)
     }
 
-    fun successProductListFromFireStore(productsList: ArrayList<Product>){
+    private fun showAlertDialogToDeleteProduct(productID: String) {
+        val builder = AlertDialog.Builder(requireActivity())
+        builder.setTitle(resources.getString(R.string.delete_dialog_title))
+        builder.setMessage(getString(R.string.delete_dialog_message))
+        builder.setIcon(android.R.drawable.ic_dialog_alert)
+        builder.setPositiveButton(resources.getString(R.string.yes)) { dialogInterface, _ ->
+            showProgressDialog(getString(R.string.please_wait))
+            FirestoreClass().deleteProduct(this, productID)
+            dialogInterface.dismiss()
+        }
+        builder.setNegativeButton(resources.getString(R.string.no)) { dialogInterface, _ ->
+            dialogInterface.dismiss()
+        }
+        val alertDialog: AlertDialog = builder.create()
+        alertDialog.setCancelable(false)
+        alertDialog.show()
+    }
+
+    fun productDeleteSuccess() {
+        hideProgressDialog()
+        Toast.makeText(
+            requireActivity(),
+            getString(R.string.product_delete_success_message),
+            Toast.LENGTH_SHORT
+        ).show()
+        getProductListFromFireStore()
+    }
+
+    fun successProductListFromFireStore(productsList: ArrayList<Product>) {
         hideProgressDialog()
 
-        if(productsList.size > 0){
+        if (productsList.size > 0) {
             rv_my_product_items.visibility = View.VISIBLE
             tv_no_products_found.visibility = View.GONE
 
@@ -43,13 +68,13 @@ class ProductsFragment : BaseFragment() {
             rv_my_product_items.setHasFixedSize(true)
             val adapterProducts = MyProductsListAdapter(requireActivity(), productsList, this)
             rv_my_product_items.adapter = adapterProducts
-        }else{
+        } else {
             rv_my_product_items.visibility = View.GONE
             tv_no_products_found.visibility = View.VISIBLE
         }
     }
 
-    private fun getProductListFromFireStore(){
+    private fun getProductListFromFireStore() {
         showProgressDialog(resources.getString(R.string.please_wait))
         FirestoreClass().getProductList(this)
     }
@@ -77,8 +102,8 @@ class ProductsFragment : BaseFragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
 
-        when(id){
-            R.id.action_add_product ->{
+        when (id) {
+            R.id.action_add_product -> {
                 startActivity(Intent(activity, AddProductActivity::class.java))
                 return true
             }

@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.*
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,6 +24,14 @@ class ProductsFragment : BaseFragment() {
         setHasOptionsMenu(true)
     }
 
+    fun deleteProduct(producID: String){
+        Toast.makeText(
+            requireActivity(),
+            "You can now delete the product. $producID",
+            Toast.LENGTH_SHORT
+        ).show()
+    }
+
     fun successProductListFromFireStore(productsList: ArrayList<Product>){
         hideProgressDialog()
 
@@ -32,7 +41,7 @@ class ProductsFragment : BaseFragment() {
 
             rv_my_product_items.layoutManager = LinearLayoutManager(activity)
             rv_my_product_items.setHasFixedSize(true)
-            val adapterProducts = MyProductsListAdapter(requireActivity(), productsList)
+            val adapterProducts = MyProductsListAdapter(requireActivity(), productsList, this)
             rv_my_product_items.adapter = adapterProducts
         }else{
             rv_my_product_items.visibility = View.GONE

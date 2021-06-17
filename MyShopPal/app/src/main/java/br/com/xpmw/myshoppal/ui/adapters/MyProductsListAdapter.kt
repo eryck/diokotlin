@@ -1,12 +1,14 @@
 package br.com.xpmw.myshoppal.ui.adapters
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import br.com.xpmw.myshoppal.R
 import br.com.xpmw.myshoppal.model.Product
+import br.com.xpmw.myshoppal.ui.activities.ProductDetailsActivity
 import br.com.xpmw.myshoppal.ui.fragments.ProductsFragment
 import br.com.xpmw.myshoppal.utils.GliderLoader
 import kotlinx.android.synthetic.main.item_list_layout.view.*
@@ -37,6 +39,11 @@ open class MyProductsListAdapter(
 
             holder.itemView.ib_delete_product.setOnClickListener {
                 fragment.deleteProduct(model.product_id)
+            }
+
+            holder.itemView.setOnClickListener{
+                val intent = Intent(context, ProductDetailsActivity::class.java)
+                context.startActivity(intent)
             }
         }
     }

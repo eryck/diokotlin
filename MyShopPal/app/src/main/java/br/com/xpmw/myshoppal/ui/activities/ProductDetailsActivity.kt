@@ -22,7 +22,7 @@ class ProductDetailsActivity : AppCompatActivity() {
     }
 
     private fun setupActionBar(){
-        setSupportActionBar(toolbar_add_product_activity)
+        setSupportActionBar(toolbar_product_details_activity)
 
         val actionBar = supportActionBar
         if(actionBar != null){

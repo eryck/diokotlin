@@ -14,6 +14,9 @@ class DashboardItemsListAdapter(
     private val context: Context,
     private val list: ArrayList<Product>
 ): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    private var onClickListener: OnClickListener? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return MyViewHolder(
             LayoutInflater.from(context).inflate(
@@ -34,7 +37,17 @@ class DashboardItemsListAdapter(
             )
             holder.itemView.tv_dashboard_item_title.text = model.title
             holder.itemView.tv_dashboard_item_price.text = "$${model.price}"
+
+            holder.itemView.setOnClickListener {
+                if (onClickListener != null){
+                    onClickListener!!.onClick(position, model)
+                }
+            }
         }
+    }
+
+    fun setOnClickListner(onClickListener: OnClickListener){
+        this.onClickListener = onClickListener
     }
 
     override fun getItemCount(): Int {
@@ -42,4 +55,8 @@ class DashboardItemsListAdapter(
     }
 
     class MyViewHolder(view: View): RecyclerView.ViewHolder(view)
+
+    interface OnClickListener{
+        fun onClick(position: Int, product: Product)
+    }
 }

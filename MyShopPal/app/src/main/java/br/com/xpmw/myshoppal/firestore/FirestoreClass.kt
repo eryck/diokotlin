@@ -202,6 +202,25 @@ class FirestoreClass {
             }
     }
 
+    fun getProductDetails(activity: ProductDetailsActivity, productId: String){
+        mFirestore.collection(PRODUCTS)
+            .document(productId)
+            .get()
+            .addOnSuccessListener { document ->
+                Log.e(activity.javaClass.simpleName, document.toString())
+                val product = document.toObject(Product::class.java)
+                if (product != null){
+                    activity.productDetailsSuccess(product)
+                }
+            }
+            .addOnFailureListener {
+                e ->
+                activity.hideProgressDialog()
+                Log.e(activity.javaClass.simpleName, "Error while getting the product details.", e)
+            }
+    }
+
+
     fun deleteProduct(fragment: ProductsFragment, productId: String) {
         mFirestore.collection(PRODUCTS)
             .document(productId)

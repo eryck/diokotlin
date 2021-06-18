@@ -18,7 +18,6 @@ import kotlinx.android.synthetic.main.fragment_dashboard.*
 
 class DashboardFragment : BaseFragment() {
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -70,14 +69,6 @@ class DashboardFragment : BaseFragment() {
 
             val adapter = DashboardItemsListAdapter(requireActivity(), dashboardItemsList)
             rv_dashboard_items.adapter = adapter
-
-            adapter.setOnClickListner(object: DashboardItemsListAdapter.OnClickListener{
-                override fun onClick(position: Int, product: Product){
-                    val intent = Intent(context, ProductDetailsActivity::class.java)
-                    intent.putExtra(EXTRA_PRODUCT_ID, product.product_id)
-                    startActivity(intent)
-                }
-            })
 
         }else{
             rv_dashboard_items.visibility = View.GONE

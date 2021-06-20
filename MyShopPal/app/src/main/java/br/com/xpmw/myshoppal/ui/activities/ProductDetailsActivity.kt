@@ -2,10 +2,12 @@ package br.com.xpmw.myshoppal.ui.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import br.com.xpmw.myshoppal.R
 import br.com.xpmw.myshoppal.firestore.FirestoreClass
 import br.com.xpmw.myshoppal.model.Product
 import br.com.xpmw.myshoppal.utils.Constants.EXTRA_PRODUCT_ID
+import br.com.xpmw.myshoppal.utils.Constants.EXTRA_PRODUCT_OWNER_ID
 import br.com.xpmw.myshoppal.utils.GliderLoader
 import kotlinx.android.synthetic.main.activity_add_product.*
 import kotlinx.android.synthetic.main.activity_product_details.*
@@ -21,6 +23,18 @@ class ProductDetailsActivity : BaseActivity() {
 
         if(intent.hasExtra(EXTRA_PRODUCT_ID)){
             mProductId = intent.getStringExtra(EXTRA_PRODUCT_ID)!!
+        }
+
+        var productOwnerID: String = ""
+
+        if(intent.hasExtra(EXTRA_PRODUCT_OWNER_ID)){
+            productOwnerID = intent.getStringExtra(EXTRA_PRODUCT_OWNER_ID)!!
+        }
+
+        if(FirestoreClass().getCurrentUserID() == productOwnerID){
+            btn_add_to_cart.visibility = View.GONE
+        }else{
+            btn_add_to_cart.visibility = View.VISIBLE
         }
 
         getProductDetails()

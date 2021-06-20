@@ -11,6 +11,7 @@ import br.com.xpmw.myshoppal.model.Product
 import br.com.xpmw.myshoppal.ui.activities.ProductDetailsActivity
 import br.com.xpmw.myshoppal.ui.fragments.ProductsFragment
 import br.com.xpmw.myshoppal.utils.Constants.EXTRA_PRODUCT_ID
+import br.com.xpmw.myshoppal.utils.Constants.EXTRA_PRODUCT_OWNER_ID
 import br.com.xpmw.myshoppal.utils.GliderLoader
 import kotlinx.android.synthetic.main.item_list_layout.view.*
 
@@ -45,6 +46,7 @@ open class MyProductsListAdapter(
             holder.itemView.setOnClickListener{
                 val intent = Intent(context, ProductDetailsActivity::class.java)
                 intent.putExtra(EXTRA_PRODUCT_ID, model.product_id)
+                intent.putExtra(EXTRA_PRODUCT_OWNER_ID, model.user_id)
                 context.startActivity(intent)
             }
         }

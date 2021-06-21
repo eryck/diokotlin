@@ -37,6 +37,8 @@ object Constants {
 
     const val EXTRA_PRODUCT_OWNER_ID: String = "extra_product_owner_id"
 
+    const val DEFAULT_CART_QUANTITY: String = "1"
+
     fun showImageChooser(activity: Activity) {
         val galleryIntent = Intent(
             Intent.ACTION_PICK,

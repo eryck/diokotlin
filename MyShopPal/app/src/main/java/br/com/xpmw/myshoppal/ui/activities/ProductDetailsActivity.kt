@@ -3,6 +3,7 @@ package br.com.xpmw.myshoppal.ui.activities
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import br.com.xpmw.myshoppal.R
 import br.com.xpmw.myshoppal.firestore.FirestoreClass
 import br.com.xpmw.myshoppal.model.CartItem
@@ -76,7 +77,7 @@ class ProductDetailsActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun addToCart() {
-        val addToCart = CartItem(
+        val cartItem = CartItem(
             FirestoreClass().getCurrentUserID(),
             mProductId,
             mProductDetails.title,
@@ -84,6 +85,14 @@ class ProductDetailsActivity : BaseActivity(), View.OnClickListener {
             mProductDetails.image,
             DEFAULT_CART_QUANTITY
         )
+
+        showProgressDialog(getString(R.string.please_wait))
+        FirestoreClass().addCartItems(this, cartItem)
+    }
+
+    fun addToCartSuccess(){
+        hideProgressDialog()
+        Toast.makeText(this, getString(R.string.success_message_item_add_to_cart), Toast.LENGTH_SHORT).show()
     }
 
     override fun onClick(v: View?) {

@@ -17,6 +17,7 @@ import br.com.xpmw.myshoppal.utils.Constants.CART_ITEMS
 import br.com.xpmw.myshoppal.utils.Constants.LOGGED_IN_USERNAME
 import br.com.xpmw.myshoppal.utils.Constants.MYSHOPPAL_PREFERENCES
 import br.com.xpmw.myshoppal.utils.Constants.PRODUCTS
+import br.com.xpmw.myshoppal.utils.Constants.PRODUCT_ID
 import br.com.xpmw.myshoppal.utils.Constants.USERS
 import br.com.xpmw.myshoppal.utils.Constants.USER_ID
 import br.com.xpmw.myshoppal.utils.Constants.USER_PROFILE_IMAGE
@@ -204,35 +205,37 @@ class FirestoreClass {
             }
     }
 
-    fun getProductDetails(activity: ProductDetailsActivity, productId: String){
+    fun getProductDetails(activity: ProductDetailsActivity, productId: String) {
         mFirestore.collection(PRODUCTS)
             .document(productId)
             .get()
             .addOnSuccessListener { document ->
                 Log.e(activity.javaClass.simpleName, document.toString())
                 val product = document.toObject(Product::class.java)
-                if (product != null){
+                if (product != null) {
                     activity.productDetailsSuccess(product)
                 }
             }
-            .addOnFailureListener {
-                e ->
+            .addOnFailureListener { e ->
                 activity.hideProgressDialog()
                 Log.e(activity.javaClass.simpleName, "Error while getting the product details.", e)
             }
     }
 
-    fun addCartItems(activity: ProductDetailsActivity, addToCart: CartItem){
+    fun addCartItems(activity: ProductDetailsActivity, addToCart: CartItem) {
         mFirestore.collection(CART_ITEMS)
             .document()
             .set(addToCart, SetOptions.merge())
             .addOnSuccessListener {
                 activity.addToCartSuccess()
             }
-            .addOnFailureListener {
-                e ->
+            .addOnFailureListener { e ->
                 activity.hideProgressDialog()
-                Log.e(activity.javaClass.simpleName, "Error while creating the document for cart item.", e)
+                Log.e(
+                    activity.javaClass.simpleName,
+                    "Error while creating the document for cart item.",
+                    e
+                )
             }
     }
 
@@ -250,6 +253,29 @@ class FirestoreClass {
                     fragment.requireActivity()
                         .javaClass.simpleName,
                     "Error while deleting the product",
+                    e
+                )
+            }
+    }
+
+    fun checkIfItemExistInCart(activity: ProductDetailsActivity, productId: String) {
+        mFirestore.collection(CART_ITEMS)
+            .whereEqualTo(USER_ID, getCurrentUserID())
+            .whereEqualTo(PRODUCT_ID, productId)
+            .get()
+            .addOnSuccessListener { document ->
+                Log.e(activity.javaClass.simpleName, document.documents.toString())
+                if (document.documents.size > 0) {
+                    activity.productExistsInCart()
+                } else {
+                    activity.hideProgressDialog()
+                }
+            }
+            .addOnFailureListener { e ->
+                activity.hideProgressDialog()
+                Log.e(
+                    activity.javaClass.simpleName,
+                    "Error while checking the existing cart list.",
                     e
                 )
             }

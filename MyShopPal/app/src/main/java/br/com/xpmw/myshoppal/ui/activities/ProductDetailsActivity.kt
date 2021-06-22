@@ -1,6 +1,5 @@
 package br.com.xpmw.myshoppal.ui.activities
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -12,7 +11,6 @@ import br.com.xpmw.myshoppal.utils.Constants.DEFAULT_CART_QUANTITY
 import br.com.xpmw.myshoppal.utils.Constants.EXTRA_PRODUCT_ID
 import br.com.xpmw.myshoppal.utils.Constants.EXTRA_PRODUCT_OWNER_ID
 import br.com.xpmw.myshoppal.utils.GliderLoader
-import kotlinx.android.synthetic.main.activity_add_product.*
 import kotlinx.android.synthetic.main.activity_product_details.*
 
 class ProductDetailsActivity : BaseActivity(), View.OnClickListener {
@@ -37,6 +35,7 @@ class ProductDetailsActivity : BaseActivity(), View.OnClickListener {
 
         if (FirestoreClass().getCurrentUserID() == productOwnerID) {
             btn_add_to_cart.visibility = View.GONE
+            btn_go_to_cart.visibility = View.GONE
         } else {
             btn_add_to_cart.visibility = View.VISIBLE
         }
@@ -44,6 +43,7 @@ class ProductDetailsActivity : BaseActivity(), View.OnClickListener {
         getProductDetails()
 
         btn_add_to_cart.setOnClickListener(this)
+        btn_go_to_cart.setOnClickListener(this)
     }
 
     private fun getProductDetails() {
@@ -51,9 +51,15 @@ class ProductDetailsActivity : BaseActivity(), View.OnClickListener {
         FirestoreClass().getProductDetails(this, mProductId)
     }
 
+    fun productExistsInCart(){
+        hideProgressDialog()
+        btn_add_to_cart.visibility = View.GONE
+        btn_go_to_cart.visibility = View.VISIBLE
+    }
+
     fun productDetailsSuccess(product: Product) {
         mProductDetails = product
-        hideProgressDialog()
+        //hideProgressDialog()
         GliderLoader(this).loadProductPicture(
             product.image,
             iv_product_detail_image
@@ -62,6 +68,12 @@ class ProductDetailsActivity : BaseActivity(), View.OnClickListener {
         tv_product_details_price.text = "$${product.price}"
         tv_product_details_description.text = product.description
         tv_product_details_available_quantity.text = product.stock_quantity
+
+        if (FirestoreClass().getCurrentUserID() == product.user_id){
+            hideProgressDialog()
+        }else{
+            FirestoreClass().checkIfItemExistInCart(this, mProductId)
+        }
     }
 
     private fun setupActionBar() {
@@ -93,6 +105,9 @@ class ProductDetailsActivity : BaseActivity(), View.OnClickListener {
     fun addToCartSuccess(){
         hideProgressDialog()
         Toast.makeText(this, getString(R.string.success_message_item_add_to_cart), Toast.LENGTH_SHORT).show()
+
+        btn_add_to_cart.visibility = View.GONE
+        btn_go_to_cart.visibility = View.VISIBLE
     }
 
     override fun onClick(v: View?) {

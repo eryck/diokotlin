@@ -1,5 +1,6 @@
 package br.com.xpmw.myshoppal.ui.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -115,6 +116,12 @@ class ProductDetailsActivity : BaseActivity(), View.OnClickListener {
             when (v.id) {
                 R.id.btn_add_to_cart -> {
                     addToCart()
+                }
+            }
+            when(v.id){
+                R.id.btn_go_to_cart ->{
+                    startActivity(Intent(this, CartListActivity::class.java))
+
                 }
             }
         }

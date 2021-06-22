@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import br.com.xpmw.myshoppal.R
 import br.com.xpmw.myshoppal.firestore.FirestoreClass
 import br.com.xpmw.myshoppal.model.Product
+import br.com.xpmw.myshoppal.ui.activities.CartListActivity
 import br.com.xpmw.myshoppal.ui.activities.ProductDetailsActivity
 import br.com.xpmw.myshoppal.ui.activities.SettingsActivity
 import br.com.xpmw.myshoppal.ui.adapters.DashboardItemsListAdapter
@@ -53,6 +54,11 @@ class DashboardFragment : BaseFragment() {
                 startActivity(Intent(activity, SettingsActivity::class.java))
                 return true
             }
+            R.id.action_cart ->{
+                startActivity(Intent(activity, CartListActivity::class.java))
+                return true
+            }
+
         }
         return super.onOptionsItemSelected(item)
     }

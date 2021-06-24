@@ -317,7 +317,7 @@ class FirestoreClass {
         mFirestore.collection(PRODUCTS)
             .get()
             .addOnSuccessListener { document ->
-
+                activity.hideProgressDialog()
                 Log.e("Products List", document.documents.toString())
                 val productsList: ArrayList<Product> = ArrayList()
                 for (i in document.documents) {

@@ -15,6 +15,7 @@ import kotlinx.android.synthetic.main.activity_cart_list.*
 class CartListActivity : BaseActivity() {
 
     private lateinit var mProductList: ArrayList<Product>
+    private lateinit var mCartListItems: ArrayList<CartItem>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,7 +29,21 @@ class CartListActivity : BaseActivity() {
     fun successCartItemsList(cartList: ArrayList<CartItem>) {
         hideProgressDialog()
 
-        if (cartList.size > 0) {
+        for (product in mProductList) {
+            for (cartItem in cartList) {
+                if (product.product_id == cartItem.product_id) {
+                    cartItem.stock_quantity == product.stock_quantity
+
+                    if (product.stock_quantity.toInt() == 0) {
+                        cartItem.cart_quantity = product.stock_quantity
+                    }
+                }
+            }
+        }
+
+        mCartListItems = cartList
+
+        if (mCartListItems.size > 0) {
             rv_cart_items_list.visibility = View.VISIBLE
             ll_checkout.visibility = View.VISIBLE
             tv_no_cart_item_found.visibility = View.GONE
@@ -41,34 +56,36 @@ class CartListActivity : BaseActivity() {
 
             var subTotal: Double = 0.0
 
-            for (item in cartList) {
+            for (item in mCartListItems) {
+                val availableQuantity = item.stock_quantity.toInt()
 
-                val price = item.price.toDouble()
-                val quantity = item.cart_quantity.toInt()
-
-                subTotal += (price * quantity)
+                if (availableQuantity > 0) {
+                    val price = item.price.toDouble()
+                    val quantity = item.cart_quantity.toInt()
+                    subTotal += (price * quantity)
+                }
             }
 
             tv_sub_total.text = "$$subTotal"
             tv_shipping_charge.text = "$10.0" //TODO change shipping charge logic
 
-            if (subTotal > 0){
+            if (subTotal > 0) {
                 ll_checkout.visibility = View.VISIBLE
 
                 val total = subTotal + 10 //TODO chage logic here
                 tv_total_amount.text = "$$total"
-            }else{
+            } else {
                 ll_checkout.visibility = View.GONE
             }
-        }
-        else{
+        } else {
             rv_cart_items_list.visibility = View.GONE
             ll_checkout.visibility = View.GONE
             tv_no_cart_item_found.visibility = View.VISIBLE
         }
     }
 
-    fun successProductListFromFireStore(productsList: ArrayList<Product>){
+    fun successProductListFromFireStore(productsList: ArrayList<Product>) {
+        hideProgressDialog()
         mProductList = productsList
         getCartItemsList()
     }
@@ -79,7 +96,7 @@ class CartListActivity : BaseActivity() {
     }
 
     private fun getCartItemsList() {
-        showProgressDialog(getString(R.string.please_wait))
+        //showProgressDialog(getString(R.string.please_wait))
         FirestoreClass().getCatList(this)
     }
 

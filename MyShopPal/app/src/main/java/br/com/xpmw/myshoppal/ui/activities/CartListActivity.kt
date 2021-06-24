@@ -8,15 +8,21 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.xpmw.myshoppal.R
 import br.com.xpmw.myshoppal.firestore.FirestoreClass
 import br.com.xpmw.myshoppal.model.CartItem
+import br.com.xpmw.myshoppal.model.Product
 import br.com.xpmw.myshoppal.ui.adapters.CartItemListAdapter
 import kotlinx.android.synthetic.main.activity_cart_list.*
 
 class CartListActivity : BaseActivity() {
+
+    private lateinit var mProductList: ArrayList<Product>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cart_list)
 
         setupActionBar()
+
+
     }
 
     fun successCartItemsList(cartList: ArrayList<CartItem>) {
@@ -62,6 +68,16 @@ class CartListActivity : BaseActivity() {
         }
     }
 
+    fun successProductListFromFireStore(productsList: ArrayList<Product>){
+        mProductList = productsList
+        getCartItemsList()
+    }
+
+    private fun getProductList() {
+        showProgressDialog(getString(R.string.please_wait))
+        FirestoreClass().getAllProductsList(this)
+    }
+
     private fun getCartItemsList() {
         showProgressDialog(getString(R.string.please_wait))
         FirestoreClass().getCatList(this)
@@ -69,7 +85,8 @@ class CartListActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        getCartItemsList()
+        //getCartItemsList()
+        getProductList()
     }
 
     private fun setupActionBar() {

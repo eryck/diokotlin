@@ -258,7 +258,7 @@ class FirestoreClass {
             }
     }
 
-    fun getCatList(activity: Activity){
+    fun getCatList(activity: Activity) {
         mFirestore.collection(CART_ITEMS)
             .whereEqualTo(USER_ID, getCurrentUserID())
             .get()
@@ -266,22 +266,21 @@ class FirestoreClass {
                 Log.e(activity.javaClass.simpleName, document.documents.toString())
                 val list: ArrayList<CartItem> = ArrayList()
 
-                for (i in document.documents){
+                for (i in document.documents) {
                     val cartItem = i.toObject(CartItem::class.java)!!
                     cartItem.id = i.id
 
                     list.add(cartItem)
                 }
 
-                when(activity){
-                    is CartListActivity ->{
+                when (activity) {
+                    is CartListActivity -> {
                         activity.successCartItemsList(list)
                     }
                 }
             }
-            .addOnFailureListener {
-                e ->
-                when (activity){
+            .addOnFailureListener { e ->
+                when (activity) {
                     is CartListActivity -> {
                         activity.hideProgressDialog()
                     }
@@ -311,6 +310,26 @@ class FirestoreClass {
                     "Error while checking the existing cart list.",
                     e
                 )
+            }
+    }
+
+    fun getAllProductsList(activity: CartListActivity) {
+        mFirestore.collection(PRODUCTS)
+            .get()
+            .addOnSuccessListener { document ->
+
+                Log.e("Products List", document.documents.toString())
+                val productsList: ArrayList<Product> = ArrayList()
+                for (i in document.documents) {
+                    val product = i.toObject(Product::class.java)
+                    product!!.product_id = i.id
+                    productsList.add(product)
+                }
+                activity.successProductListFromFireStore(productsList)
+            }
+            .addOnFailureListener { e ->
+                activity.hideProgressDialog()
+                Log.e("Get Product List", "Error while getting all product list", e)
             }
     }
 

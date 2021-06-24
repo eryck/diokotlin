@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import br.com.xpmw.myshoppal.R
 import br.com.xpmw.myshoppal.firestore.FirestoreClass
 import br.com.xpmw.myshoppal.model.CartItem
@@ -70,10 +71,21 @@ class ProductDetailsActivity : BaseActivity(), View.OnClickListener {
         tv_product_details_description.text = product.description
         tv_product_details_available_quantity.text = product.stock_quantity
 
-        if (FirestoreClass().getCurrentUserID() == product.user_id){
+        if (product.stock_quantity.toInt() == 0){
             hideProgressDialog()
+            btn_add_to_cart.visibility = View.GONE
+            tv_product_details_available_quantity.text = getString(R.string.lbl_out_of_stock)
+            tv_product_details_available_quantity.setTextColor(
+                ContextCompat.getColor(
+                    this, R.color.colorSnackBarError
+                )
+            )
         }else{
-            FirestoreClass().checkIfItemExistInCart(this, mProductId)
+            if (FirestoreClass().getCurrentUserID() == product.user_id){
+                hideProgressDialog()
+            }else{
+                FirestoreClass().checkIfItemExistInCart(this, mProductId)
+            }
         }
     }
 

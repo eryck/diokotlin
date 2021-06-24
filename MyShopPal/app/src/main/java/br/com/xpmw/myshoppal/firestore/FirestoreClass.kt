@@ -313,6 +313,31 @@ class FirestoreClass {
             }
     }
 
+    fun removeItemFromCart(context: Context, cart_id: String) {
+        mFirestore.collection(CART_ITEMS)
+            .document(cart_id)
+            .delete()
+            .addOnSuccessListener {
+                when (context) {
+                    is CartListActivity -> {
+                        context.itemRemovedSuccess()
+                    }
+                }
+            }
+            .addOnFailureListener { e ->
+                when (context) {
+                    is CartListActivity -> {
+                        context.hideProgressDialog()
+                    }
+                }
+                Log.e(
+                    context.javaClass.simpleName,
+                    "Error while removing the item from the cart list.",
+                    e
+                )
+            }
+    }
+
     fun getAllProductsList(activity: CartListActivity) {
         mFirestore.collection(PRODUCTS)
             .get()

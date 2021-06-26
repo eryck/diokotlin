@@ -10,6 +10,7 @@ import br.com.xpmw.myshoppal.R
 import br.com.xpmw.myshoppal.firestore.FirestoreClass
 import br.com.xpmw.myshoppal.model.CartItem
 import br.com.xpmw.myshoppal.ui.activities.CartListActivity
+import br.com.xpmw.myshoppal.utils.Constants.CART_QUANTITY
 import br.com.xpmw.myshoppal.utils.GliderLoader
 import kotlinx.android.synthetic.main.item_cart_layout.view.*
 
@@ -59,12 +60,50 @@ class CartItemListAdapter(
 
             holder.itemView.ib_delete_cart_item.setOnClickListener {
                 when (context) {
-                    is CartListActivity ->{
+                    is CartListActivity -> {
                         context.showProgressDialog(context.getString(R.string.please_wait))
                     }
                 }
                 FirestoreClass().removeItemFromCart(context, model.id)
             }
+
+            holder.itemView.ib_remove_cart_item.setOnClickListener {
+                if (model.cart_quantity == "1"){
+                    FirestoreClass().removeItemFromCart(context, model.id)
+                }else{
+                    val cartQuantity: Int = model.cart_quantity.toInt()
+                    val itemHashMap = HashMap<String, Any>()
+
+                    itemHashMap[CART_QUANTITY] = (cartQuantity - 1).toString()
+
+                    if (context is CartListActivity){
+                        context.showProgressDialog(context.getString(R.string.please_wait))
+                    }
+                    FirestoreClass().updateMyCart(context, model.id, itemHashMap)
+                }
+            }
+
+            holder.itemView.ib_add_cart_item.setOnClickListener {
+                val cartQuantity: Int = model.cart_quantity.toInt()
+                if (cartQuantity < model.stock_quantity){
+                    val itemHashMap = HashMap<String, Any>()
+                    itemHashMap[CART_QUANTITY] = (cartQuantity + 1).toString()
+
+                    if (context is CartListActivity){
+                        context.showProgressDialog(context.getString(R.string.please_wait))
+                    }
+                    FirestoreClass().updateMyCart(context, model.id, itemHashMap)
+                }else{
+                    if (context is CartListActivity){
+                        context.showErrorSnackBar(
+                            context.getString(
+                                R.string.msg_for_available_stock,
+                                model.stock_quantity.toString()),
+                            true)
+                    }
+                }
+            }
+
         }
     }
 

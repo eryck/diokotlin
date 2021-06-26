@@ -43,6 +43,8 @@ object Constants {
 
     const val PRODUCT_ID: String = "product_id"
 
+    const val CART_QUANTITY: String = "cart_quantity"
+
     fun showImageChooser(activity: Activity) {
         val galleryIntent = Intent(
             Intent.ACTION_PICK,

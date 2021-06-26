@@ -23,8 +23,39 @@ class CartListActivity : BaseActivity() {
         setContentView(R.layout.activity_cart_list)
 
         setupActionBar()
+    }
 
+    override fun onResume() {
+        super.onResume()
+        getProductList()
+    }
 
+    private fun setupActionBar() {
+
+        setSupportActionBar(toolbar_cart_list_activity)
+
+        val actionBar = supportActionBar
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true)
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_white_color_back_24dp)
+        }
+        toolbar_cart_list_activity.setNavigationOnClickListener { onBackPressed() }
+    }
+
+    fun itemUpdateSuccess(){
+        hideProgressDialog()
+        getCartItemsList()
+    }
+
+    private fun getProductList() {
+        showProgressDialog(getString(R.string.please_wait))
+        FirestoreClass().getAllProductsList(this@CartListActivity)
+    }
+
+    fun successProductListFromFireStore(productsList: ArrayList<Product>) {
+        hideProgressDialog()
+        mProductList = productsList
+        getCartItemsList()
     }
 
     fun successCartItemsList(cartList: ArrayList<CartItem>) {
@@ -33,7 +64,7 @@ class CartListActivity : BaseActivity() {
         for (product in mProductList) {
             for (cartItem in cartList) {
                 if (product.product_id == cartItem.product_id) {
-                    cartItem.stock_quantity == product.stock_quantity
+                    cartItem.stock_quantity.toString() == product.stock_quantity
 
                     if (product.stock_quantity.toInt() == 0) {
                         cartItem.cart_quantity = product.stock_quantity
@@ -52,13 +83,13 @@ class CartListActivity : BaseActivity() {
             rv_cart_items_list.layoutManager = LinearLayoutManager(this@CartListActivity)
             rv_cart_items_list.setHasFixedSize(true)
 
-            val cartListAdapter = CartItemListAdapter(this@CartListActivity, cartList)
+            val cartListAdapter = CartItemListAdapter(this@CartListActivity, mCartListItems)
             rv_cart_items_list.adapter = cartListAdapter
 
             var subTotal: Double = 0.0
 
             for (item in mCartListItems) {
-                val availableQuantity = item.stock_quantity.toInt()
+                val availableQuantity = item.stock_quantity
 
                 if (availableQuantity > 0) {
                     val price = item.price.toDouble()
@@ -85,24 +116,8 @@ class CartListActivity : BaseActivity() {
         }
     }
 
-    fun successProductListFromFireStore(productsList: ArrayList<Product>) {
-        hideProgressDialog()
-        mProductList = productsList
-        getCartItemsList()
-    }
-
-    private fun getProductList() {
-        showProgressDialog(getString(R.string.please_wait))
-        FirestoreClass().getAllProductsList(this@CartListActivity)
-    }
-
     private fun getCartItemsList() {
         FirestoreClass().getCatList(this@CartListActivity)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        getProductList()
     }
 
     fun itemRemovedSuccess() {
@@ -113,17 +128,5 @@ class CartListActivity : BaseActivity() {
             Toast.LENGTH_SHORT
         ).show()
         getCartItemsList()
-    }
-
-    private fun setupActionBar() {
-
-        setSupportActionBar(toolbar_cart_list_activity)
-
-        val actionBar = supportActionBar
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true)
-            actionBar.setHomeAsUpIndicator(R.drawable.ic_white_color_back_24dp)
-        }
-        toolbar_cart_list_activity.setNavigationOnClickListener { onBackPressed() }
     }
 }

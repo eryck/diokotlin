@@ -104,5 +104,6 @@
     <string name="cart">Cart</string>
     <string name="lbl_out_of_stock">Item remove successfully.</string>
     <string name="msg_item_removed_successfully">Item removed successfully</string>
+    <string name="msg_for_available_stock">Available stock is %1$s!. You Can not add more than stock quantity.</string>
 
 </resources>

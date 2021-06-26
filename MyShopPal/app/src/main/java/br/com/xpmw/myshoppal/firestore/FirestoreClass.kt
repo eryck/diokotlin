@@ -195,13 +195,17 @@ class FirestoreClass {
 
                     productsList.add(product)
                 }
-
                 when (fragment) {
                     is ProductsFragment -> {
                         fragment.successProductListFromFireStore(productsList)
                     }
                 }
-
+            }.addOnFailureListener {
+                when (fragment) {
+                    is ProductsFragment -> {
+                        fragment.hideProgressDialog()
+                    }
+                }
             }
     }
 
@@ -211,10 +215,10 @@ class FirestoreClass {
             .get()
             .addOnSuccessListener { document ->
                 Log.e(activity.javaClass.simpleName, document.toString())
-                val product = document.toObject(Product::class.java)
-                if (product != null) {
-                    activity.productDetailsSuccess(product)
-                }
+                val product = document.toObject(Product::class.java)!!
+                //if (product != null) {
+                activity.productDetailsSuccess(product)
+                //}
             }
             .addOnFailureListener { e ->
                 activity.hideProgressDialog()
@@ -342,7 +346,6 @@ class FirestoreClass {
         mFirestore.collection(PRODUCTS)
             .get()
             .addOnSuccessListener { document ->
-                activity.hideProgressDialog()
                 Log.e("Products List", document.documents.toString())
                 val productsList: ArrayList<Product> = ArrayList()
                 for (i in document.documents) {

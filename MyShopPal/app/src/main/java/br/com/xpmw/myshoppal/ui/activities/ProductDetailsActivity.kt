@@ -61,7 +61,6 @@ class ProductDetailsActivity : BaseActivity(), View.OnClickListener {
 
     fun productDetailsSuccess(product: Product) {
         mProductDetails = product
-        //hideProgressDialog()
         GliderLoader(this).loadProductPicture(
             product.image,
             iv_product_detail_image

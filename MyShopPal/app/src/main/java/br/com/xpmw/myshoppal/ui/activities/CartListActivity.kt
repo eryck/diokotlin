@@ -49,10 +49,10 @@ class CartListActivity : BaseActivity() {
             ll_checkout.visibility = View.VISIBLE
             tv_no_cart_item_found.visibility = View.GONE
 
-            rv_cart_items_list.layoutManager = LinearLayoutManager(this)
+            rv_cart_items_list.layoutManager = LinearLayoutManager(this@CartListActivity)
             rv_cart_items_list.setHasFixedSize(true)
 
-            val cartListAdapter = CartItemListAdapter(this, cartList)
+            val cartListAdapter = CartItemListAdapter(this@CartListActivity, cartList)
             rv_cart_items_list.adapter = cartListAdapter
 
             var subTotal: Double = 0.0
@@ -93,23 +93,25 @@ class CartListActivity : BaseActivity() {
 
     private fun getProductList() {
         showProgressDialog(getString(R.string.please_wait))
-        FirestoreClass().getAllProductsList(this)
+        FirestoreClass().getAllProductsList(this@CartListActivity)
     }
 
     private fun getCartItemsList() {
-        //showProgressDialog(getString(R.string.please_wait))
-        FirestoreClass().getCatList(this)
+        FirestoreClass().getCatList(this@CartListActivity)
     }
 
     override fun onResume() {
         super.onResume()
-        //getCartItemsList()
         getProductList()
     }
 
-    fun itemRemovedSuccess(){
+    fun itemRemovedSuccess() {
         hideProgressDialog()
-        Toast.makeText(this, getString(R.string.msg_item_removed_successfully), Toast.LENGTH_SHORT).show()
+        Toast.makeText(
+            this@CartListActivity,
+            getString(R.string.msg_item_removed_successfully),
+            Toast.LENGTH_SHORT
+        ).show()
         getCartItemsList()
     }
 
@@ -122,7 +124,6 @@ class CartListActivity : BaseActivity() {
             actionBar.setDisplayHomeAsUpEnabled(true)
             actionBar.setHomeAsUpIndicator(R.drawable.ic_white_color_back_24dp)
         }
-
         toolbar_cart_list_activity.setNavigationOnClickListener { onBackPressed() }
     }
 }

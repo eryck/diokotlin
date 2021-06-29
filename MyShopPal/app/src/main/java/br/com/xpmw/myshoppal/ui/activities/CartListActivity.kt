@@ -64,7 +64,7 @@ class CartListActivity : BaseActivity() {
         for (product in mProductList) {
             for (cartItem in cartList) {
                 if (product.product_id == cartItem.product_id) {
-                    cartItem.stock_quantity.toString() == product.stock_quantity
+                    cartItem.stock_quantity == product.stock_quantity
 
                     if (product.stock_quantity.toInt() == 0) {
                         cartItem.cart_quantity = product.stock_quantity
@@ -89,7 +89,7 @@ class CartListActivity : BaseActivity() {
             var subTotal: Double = 0.0
 
             for (item in mCartListItems) {
-                val availableQuantity = item.stock_quantity
+                val availableQuantity = item.stock_quantity.toInt()
 
                 if (availableQuantity > 0) {
                     val price = item.price.toDouble()

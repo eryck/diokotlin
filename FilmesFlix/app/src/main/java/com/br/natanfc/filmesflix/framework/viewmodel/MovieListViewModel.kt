@@ -22,8 +22,6 @@ class MovieListViewModel: ViewModel() {
         const val TAG = "MovieRepository"
     }
 
-
-
     /* Moc
     private val listOfMovies = arrayListOf(
         Movie(

@@ -28,22 +28,20 @@ object Constants {
     const val COMPLETE_PROFILE: String = "profileCompleted"
 
     const val PRODUCT_IMAGE: String = "Product_Image"
-
     const val USER_ID: String = "user_id"
-
     const val USER_PROFILE_IMAGE: String = "user_profile_image"
-
     const val EXTRA_PRODUCT_ID: String = "extra_product_id"
-
     const val EXTRA_PRODUCT_OWNER_ID: String = "extra_product_owner_id"
-
     const val DEFAULT_CART_QUANTITY: String = "1"
-
     const val CART_ITEMS: String = "cart_items"
-
     const val PRODUCT_ID: String = "product_id"
-
     const val CART_QUANTITY: String = "cart_quantity"
+
+    const val HOME: String = "Home"
+    const val OFFICE: String = "Office"
+    const val OTHER: String = "Other"
+
+    const val ADDRESS: String = "address"
 
     fun showImageChooser(activity: Activity) {
         val galleryIntent = Intent(

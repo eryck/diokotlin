@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorOffWhite"
     tools:context=".ui.activities.RegisterActivity">
 
 
@@ -49,6 +50,7 @@
                 android:layout_marginEnd="16dp"
                 android:hint="@string/hint_first_name"
                 android:textColorHint="@color/colorSecondaryText"
+                app:boxStrokeColor="@color/colorThemeOrange"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -73,6 +75,7 @@
                 android:layout_marginEnd="16dp"
                 android:hint="@string/hint_last_name"
                 android:textColorHint="@color/colorSecondaryText"
+                app:boxStrokeColor="@color/colorThemeOrange"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/til_first_name">
@@ -97,6 +100,7 @@
                 android:layout_marginEnd="16dp"
                 android:hint="@string/et_hint_email_id"
                 android:textColorHint="@color/colorSecondaryText"
+                app:boxStrokeColor="@color/colorThemeOrange"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/til_last_name">
@@ -121,6 +125,7 @@
                 android:layout_marginEnd="16dp"
                 android:hint="@string/et_hint_password"
                 android:textColorHint="@color/colorSecondaryText"
+                app:boxStrokeColor="@color/colorThemeOrange"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/til_email">
@@ -145,6 +150,7 @@
                 android:layout_marginEnd="16dp"
                 android:hint="@string/et_hint_confirm_password"
                 android:textColorHint="@color/colorSecondaryText"
+                app:boxStrokeColor="@color/colorThemeOrange"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/til_password">

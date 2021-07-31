@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorOffWhite"
     tools:context=".ui.activities.UserProfileActivity">
 
     <androidx.appcompat.widget.Toolbar
@@ -55,8 +56,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/colorDarkGrey"
-                    />
+                    android:background="@color/colorDarkGrey" />
 
                 <ImageView
                     android:id="@+id/iv_user_photo"
@@ -81,15 +81,16 @@
                 android:layout_marginEnd="16dp"
                 android:hint="@string/hint_first_name"
                 android:textColorHint="@color/colorSecondaryText"
+                app:boxStrokeColor="@color/colorThemeOrange"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/fl_user_image">
 
                 <EditText
                     android:id="@+id/et_first_name"
+                    style="@style/Theme.MyShopPal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    style="@style/Theme.MyShopPal"
                     android:inputType="text"
                     android:padding="@dimen/et_padding"
                     android:textSize="@dimen/et_textSize" />
@@ -105,15 +106,16 @@
                 android:layout_marginEnd="16dp"
                 android:hint="@string/hint_last_name"
                 android:textColorHint="@color/colorSecondaryText"
+                app:boxStrokeColor="@color/colorThemeOrange"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/til_first_name">
 
                 <EditText
                     android:id="@+id/et_last_name"
+                    style="@style/Theme.MyShopPal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    style="@style/Theme.MyShopPal"
                     android:inputType="text"
                     android:padding="@dimen/et_padding"
                     android:textSize="@dimen/et_textSize" />
@@ -129,16 +131,17 @@
                 android:layout_marginEnd="16dp"
                 android:hint="@string/et_hint_email_id"
                 android:textColorHint="@color/colorSecondaryText"
+                app:boxStrokeColor="@color/colorThemeOrange"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/til_last_name">
 
                 <EditText
                     android:id="@+id/et_email"
+                    style="@style/Theme.MyShopPal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textEmailAddress"
-                    style="@style/Theme.MyShopPal"
                     android:padding="@dimen/et_padding"
                     android:textSize="@dimen/et_textSize" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -153,16 +156,17 @@
                 android:layout_marginEnd="16dp"
                 android:hint="@string/et_hint_mobile_number"
                 android:textColorHint="@color/colorSecondaryText"
+                app:boxStrokeColor="@color/colorThemeOrange"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/til_email">
 
                 <EditText
                     android:id="@+id/et_mobile_number"
+                    style="@style/Theme.MyShopPal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="phone"
-                    style="@style/Theme.MyShopPal"
                     android:padding="@dimen/et_padding"
                     android:textSize="@dimen/et_textSize" />
             </com.google.android.material.textfield.TextInputLayout>

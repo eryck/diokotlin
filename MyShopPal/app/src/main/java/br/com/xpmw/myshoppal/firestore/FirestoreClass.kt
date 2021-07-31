@@ -7,12 +7,14 @@ import android.net.Uri
 import android.util.Log
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
+import br.com.xpmw.myshoppal.model.Address
 import br.com.xpmw.myshoppal.model.CartItem
 import br.com.xpmw.myshoppal.model.Product
 import br.com.xpmw.myshoppal.model.User
 import br.com.xpmw.myshoppal.ui.activities.*
 import br.com.xpmw.myshoppal.ui.fragments.DashboardFragment
 import br.com.xpmw.myshoppal.ui.fragments.ProductsFragment
+import br.com.xpmw.myshoppal.utils.Constants.ADDRESS
 import br.com.xpmw.myshoppal.utils.Constants.CART_ITEMS
 import br.com.xpmw.myshoppal.utils.Constants.LOGGED_IN_USERNAME
 import br.com.xpmw.myshoppal.utils.Constants.MYSHOPPAL_PREFERENCES
@@ -293,6 +295,23 @@ class FirestoreClass {
                 Log.e(
                     activity.javaClass.simpleName,
                     "Erros while getting the cart list items",
+                    e
+                )
+            }
+    }
+
+    fun addAddress(activity: AddEditAddressActivity, addressInfo: Address) {
+        mFirestore.collection(ADDRESS)
+            .document()
+            .set(addressInfo, SetOptions.merge())
+            .addOnSuccessListener {
+                activity.addUpdateAddressSuccess()
+            }
+            .addOnFailureListener { e ->
+                activity.hideProgressDialog()
+                Log.e(
+                    activity.javaClass.simpleName,
+                    "Error while adding the address",
                     e
                 )
             }

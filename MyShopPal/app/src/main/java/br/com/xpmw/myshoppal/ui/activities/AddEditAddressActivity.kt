@@ -2,6 +2,8 @@ package br.com.xpmw.myshoppal.ui.activities
 
 import android.os.Bundle
 import android.text.TextUtils
+import android.view.View
+import android.widget.Toast
 import br.com.xpmw.myshoppal.R
 import br.com.xpmw.myshoppal.firestore.FirestoreClass
 import br.com.xpmw.myshoppal.model.Address
@@ -17,6 +19,17 @@ class AddEditAddressActivity : BaseActivity() {
         setContentView(R.layout.activity_add_edit_address)
 
         setupActionBas()
+
+        btn_submit_address.setOnClickListener { saveAddressToFirestore() }
+
+        rg_type.setOnCheckedChangeListener{_, checkId ->
+            if (checkId == R.id.rb_other){
+                til_other_details.visibility = View.VISIBLE
+            }else{
+                til_other_details.visibility = View.GONE
+            }
+
+        }
     }
 
     private fun setupActionBas() {
@@ -31,7 +44,7 @@ class AddEditAddressActivity : BaseActivity() {
         toolbar_add_edit_address_activity.setNavigationOnClickListener { onBackPressed() }
     }
 
-    private fun saveAddressToFirestore(){
+    private fun saveAddressToFirestore() {
 
         val fullName: String = et_full_name.text.toString().trim { it <= ' ' }
         val phoneNumber: String = et_phone_number.text.toString().trim { it <= ' ' }
@@ -40,10 +53,10 @@ class AddEditAddressActivity : BaseActivity() {
         val additionalNote: String = et_additional_note.text.toString().trim { it <= ' ' }
         val otherDetails: String = et_other_details.text.toString().trim { it <= ' ' }
 
-        if(validateData()){
+        if (validateData()) {
             showProgressDialog(getString(R.string.please_wait))
 
-            val addressType: String = when{
+            val addressType: String = when {
                 rb_home.isChecked -> {
                     HOME
                 }
@@ -65,7 +78,22 @@ class AddEditAddressActivity : BaseActivity() {
                 addressType,
                 otherDetails
             )
+
+            FirestoreClass().addAddress(this, addressModel)
         }
+    }
+
+    fun addUpdateAddressSuccess() {
+        hideProgressDialog()
+
+        Toast.makeText(
+            this,
+            getString(R.string.err_your_address_added_successfully),
+            Toast.LENGTH_SHORT
+        )
+            .show()
+
+        finish()
     }
 
     private fun validateData(): Boolean {

@@ -1,13 +1,17 @@
 package br.com.xpmw.myshoppal.ui.adapters
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import br.com.xpmw.myshoppal.R
 import br.com.xpmw.myshoppal.model.Address
+import br.com.xpmw.myshoppal.ui.activities.AddEditAddressActivity
+import br.com.xpmw.myshoppal.utils.Constants.EXTRA_ADDRESS_DETAILS
 import kotlinx.android.synthetic.main.item_address_layout.view.*
 
 class AddressListAdapter(
@@ -24,6 +28,13 @@ class AddressListAdapter(
                 false
             )
         )
+    }
+
+    fun notifyEditItem(activity: Activity, position: Int){
+        val intent = Intent(context, AddEditAddressActivity::class.java)
+        intent.putExtra(EXTRA_ADDRESS_DETAILS, list[position])
+        activity.startActivity(intent)
+        notifyItemChanged(position)
     }
 
     @SuppressLint("SetTextI18n")

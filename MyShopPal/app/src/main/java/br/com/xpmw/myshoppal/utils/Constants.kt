@@ -43,6 +43,8 @@ object Constants {
 
     const val ADDRESS: String = "address"
 
+    const val EXTRA_ADDRESS_DETAILS: String = "AddressDetails"
+
     fun showImageChooser(activity: Activity) {
         val galleryIntent = Intent(
             Intent.ACTION_PICK,

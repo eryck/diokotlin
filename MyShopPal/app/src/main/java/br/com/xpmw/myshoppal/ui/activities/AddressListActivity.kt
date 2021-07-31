@@ -4,9 +4,12 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.xpmw.myshoppal.R
 import br.com.xpmw.myshoppal.firestore.FirestoreClass
 import br.com.xpmw.myshoppal.model.Address
+import br.com.xpmw.myshoppal.ui.adapters.AddressListAdapter
 import kotlinx.android.synthetic.main.activity_address_list.*
 import java.util.ArrayList
 
@@ -27,8 +30,19 @@ class AddressListActivity : BaseActivity() {
 
     fun successAddressListFromFirestore(addressList: ArrayList<Address>) {
         hideProgressDialog()
-        for (i in addressList) {
-            Log.i("Name and Address", "${i.name} :: ${i.address}")
+        if(addressList.size > 0){
+            rv_address_list.visibility = View.VISIBLE
+            tv_no_address_found.visibility = View.GONE
+
+            rv_address_list.layoutManager = LinearLayoutManager(this)
+            rv_address_list.setHasFixedSize(true)
+
+            val addressAdapter = AddressListAdapter(this, addressList)
+            rv_address_list.adapter = addressAdapter
+
+        }else{
+            rv_address_list.visibility = View.GONE
+            tv_no_address_found.visibility = View.VISIBLE
         }
     }
 

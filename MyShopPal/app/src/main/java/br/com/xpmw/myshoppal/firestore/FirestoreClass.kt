@@ -324,6 +324,22 @@ class FirestoreClass {
             }
     }
 
+    fun upDateAddress(activity: AddEditAddressActivity, addressInfo: Address, addressId: String){
+        mFirestore.collection(ADDRESS)
+            .document(addressId)
+            .set(addressInfo, SetOptions.merge())
+            .addOnSuccessListener {
+                activity.addUpdateAddressSuccess()
+            }
+            .addOnFailureListener { e ->
+                activity.hideProgressDialog()
+                Log.e(
+                    activity.javaClass.simpleName,
+                "Error while updating the address"
+                )
+            }
+    }
+
     fun addAddress(activity: AddEditAddressActivity, addressInfo: Address) {
         mFirestore.collection(ADDRESS)
             .document()

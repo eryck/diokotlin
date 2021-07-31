@@ -18,15 +18,10 @@ import kotlinx.android.synthetic.main.activity_address_list.*
 import java.util.ArrayList
 
 class AddressListActivity : BaseActivity() {
-    private var mAddressDetails: Address? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_address_list)
-
-        if (intent.hasExtra(EXTRA_ADDRESS_DETAILS)){
-            mAddressDetails = intent.getParcelableExtra(EXTRA_ADDRESS_DETAILS)
-        }
 
         setupActionBas()
 

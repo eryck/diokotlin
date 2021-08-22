@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -13,6 +14,7 @@ import br.com.xpmw.myshoppal.firestore.FirestoreClass
 import br.com.xpmw.myshoppal.model.Address
 import br.com.xpmw.myshoppal.ui.adapters.AddressListAdapter
 import br.com.xpmw.myshoppal.utils.Constants.EXTRA_ADDRESS_DETAILS
+import br.com.xpmw.myshoppal.utils.SwipeToDeleteCallback
 import com.myshoppal.utils.SwipeToEditCallback
 import kotlinx.android.synthetic.main.activity_address_list.*
 import java.util.ArrayList
@@ -23,7 +25,7 @@ class AddressListActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_address_list)
 
-        setupActionBas()
+        setupActionBar()
 
         tv_add_address.setOnClickListener {
             val intent = Intent(this, AddEditAddressActivity::class.java)
@@ -61,6 +63,18 @@ class AddressListActivity : BaseActivity() {
             val editItemTouchHelper = ItemTouchHelper(editSwipeHandler)
             editItemTouchHelper.attachToRecyclerView(rv_address_list)
 
+            val deleteSwipeHandler = object : SwipeToDeleteCallback(this){
+                override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                    showProgressDialog(getString(R.string.please_wait))
+
+                    FirestoreClass().deleteAddress(this@AddressListActivity,
+                        addressList[viewHolder.adapterPosition].id)
+                }
+            }
+
+            val deleteItemTouchHelper = ItemTouchHelper(deleteSwipeHandler)
+            deleteItemTouchHelper.attachToRecyclerView(rv_address_list)
+
         }else{
             rv_address_list.visibility = View.GONE
             tv_no_address_found.visibility = View.VISIBLE
@@ -73,7 +87,18 @@ class AddressListActivity : BaseActivity() {
         FirestoreClass().getAddressesList(this)
     }
 
-    private fun setupActionBas() {
+    fun deleteAddressSuccess(){
+        hideProgressDialog()
+        Toast.makeText(
+            this@AddressListActivity,
+            getString(R.string.err_your_address_deleted_successfully),
+            Toast.LENGTH_SHORT
+        ).show()
+
+        getAddressesList()
+    }
+
+    private fun setupActionBar() {
         setSupportActionBar(toolbar_address_list_activity)
 
         val actionBar = supportActionBar

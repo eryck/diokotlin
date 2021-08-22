@@ -324,6 +324,24 @@ class FirestoreClass {
             }
     }
 
+    fun deleteAddress(activity: AddressListActivity, addressId: String){
+        mFirestore.collection(ADDRESS)
+            .document(addressId)
+            .delete()
+            .addOnSuccessListener {
+                activity.deleteAddressSuccess()
+            }
+            .addOnFailureListener {
+                e ->
+                activity.hideProgressDialog()
+                Log.e(
+                    activity.javaClass.simpleName,
+                    "Error while deleting the address",
+                    e
+                )
+            }
+    }
+
     fun upDateAddress(activity: AddEditAddressActivity, addressInfo: Address, addressId: String){
         mFirestore.collection(ADDRESS)
             .document(addressId)

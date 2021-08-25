@@ -29,11 +29,6 @@ class AddressListActivity : BaseActivity() {
 
         setupActionBar()
 
-        tv_add_address.setOnClickListener {
-            val intent = Intent(this, AddEditAddressActivity::class.java)
-            startActivityForResult(intent, ADD_ADDRESS_REQUEST_CODE)
-        }
-
         if (intent.hasExtra(EXTRA_SELECT_ADDRESS)){
             mSelectAddress = intent.getBooleanExtra(EXTRA_SELECT_ADDRESS, false)
         }
@@ -41,6 +36,14 @@ class AddressListActivity : BaseActivity() {
         if (mSelectAddress){
             tv_title_address_lisr.text = getString(R.string.title_select_address)
         }
+
+        tv_add_address.setOnClickListener {
+            val intent = Intent(this, AddEditAddressActivity::class.java)
+            startActivityForResult(intent, ADD_ADDRESS_REQUEST_CODE)
+        }
+
+        getAddressesList()
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

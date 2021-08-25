@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import br.com.xpmw.myshoppal.R
 import br.com.xpmw.myshoppal.model.Address
 import br.com.xpmw.myshoppal.ui.activities.AddEditAddressActivity
+import br.com.xpmw.myshoppal.ui.activities.CheckoutActivity
 import br.com.xpmw.myshoppal.utils.Constants.ADD_ADDRESS_REQUEST_CODE
 import br.com.xpmw.myshoppal.utils.Constants.EXTRA_ADDRESS_DETAILS
 import kotlinx.android.synthetic.main.item_address_layout.view.*
@@ -52,11 +53,8 @@ class AddressListAdapter(
 
             if (selectAddress) {
                 holder.itemView.setOnClickListener {
-                    Toast.makeText(
-                        context,
-                        "Selected address : ${model.address}, ${model.zipCode}",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    val intent = Intent(context, CheckoutActivity::class.java)
+                    context.startActivity(intent)
                 }
             }
         }

@@ -16,7 +16,8 @@ import kotlinx.android.synthetic.main.item_cart_layout.view.*
 
 class CartItemListAdapter(
     private val context: Context,
-    private val list: ArrayList<CartItem>
+    private val list: ArrayList<CartItem>,
+    private val updateCartItem: Boolean
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return MyViewHolder(
@@ -43,6 +44,12 @@ class CartItemListAdapter(
                 holder.itemView.ib_remove_cart_item.visibility = View.GONE
                 holder.itemView.ib_add_cart_item.visibility = View.GONE
 
+                if (updateCartItem){
+                    holder.itemView.ib_delete_cart_item.visibility = View.VISIBLE
+                }else{
+                    holder.itemView.ib_delete_cart_item.visibility = View.GONE
+                }
+
                 holder.itemView.tv_cart_quantity.text =
                     context.resources.getString(R.string.lbl_out_of_stock)
 
@@ -50,8 +57,15 @@ class CartItemListAdapter(
                     ContextCompat.getColor(context, R.color.colorSnackBarError)
                 )
             } else {
-                holder.itemView.ib_remove_cart_item.visibility = View.VISIBLE
-                holder.itemView.ib_add_cart_item.visibility = View.VISIBLE
+                if(updateCartItem){
+                    holder.itemView.ib_remove_cart_item.visibility = View.VISIBLE
+                    holder.itemView.ib_add_cart_item.visibility = View.VISIBLE
+                    holder.itemView.ib_delete_cart_item.visibility = View.VISIBLE
+                }else{
+                    holder.itemView.ib_remove_cart_item.visibility = View.GONE
+                    holder.itemView.ib_add_cart_item.visibility = View.GONE
+                    holder.itemView.ib_delete_cart_item.visibility = View.GONE
+                }
 
                 holder.itemView.tv_cart_quantity.setTextColor(
                     ContextCompat.getColor(context, R.color.colorSecondaryText)

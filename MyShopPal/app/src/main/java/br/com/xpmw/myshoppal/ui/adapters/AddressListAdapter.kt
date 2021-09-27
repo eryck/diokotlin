@@ -7,7 +7,6 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import br.com.xpmw.myshoppal.R
 import br.com.xpmw.myshoppal.model.Address
@@ -15,6 +14,7 @@ import br.com.xpmw.myshoppal.ui.activities.AddEditAddressActivity
 import br.com.xpmw.myshoppal.ui.activities.CheckoutActivity
 import br.com.xpmw.myshoppal.utils.Constants.ADD_ADDRESS_REQUEST_CODE
 import br.com.xpmw.myshoppal.utils.Constants.EXTRA_ADDRESS_DETAILS
+import br.com.xpmw.myshoppal.utils.Constants.EXTRA_SELECT_ADDRESS
 import kotlinx.android.synthetic.main.item_address_layout.view.*
 
 class AddressListAdapter(
@@ -54,6 +54,7 @@ class AddressListAdapter(
             if (selectAddress) {
                 holder.itemView.setOnClickListener {
                     val intent = Intent(context, CheckoutActivity::class.java)
+                    intent.putExtra(EXTRA_SELECT_ADDRESS, model)
                     context.startActivity(intent)
                 }
             }

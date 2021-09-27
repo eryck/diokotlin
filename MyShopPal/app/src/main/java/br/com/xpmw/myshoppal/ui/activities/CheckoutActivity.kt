@@ -1,15 +1,19 @@
 package br.com.xpmw.myshoppal.ui.activities
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import br.com.xpmw.myshoppal.R
+import br.com.xpmw.myshoppal.firestore.FirestoreClass
 import br.com.xpmw.myshoppal.model.Address
+import br.com.xpmw.myshoppal.model.CartItem
+import br.com.xpmw.myshoppal.model.Product
 import br.com.xpmw.myshoppal.utils.Constants.EXTRA_SELECT_ADDRESS
 import kotlinx.android.synthetic.main.activity_checkout.*
 
-class CheckoutActivity : AppCompatActivity() {
+class CheckoutActivity : BaseActivity() {
 
     private var mAddressDetails: Address? = null
+    private lateinit var mProductList: ArrayList<Product>
+    private lateinit var mCartItemList: ArrayList<CartItem>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +35,29 @@ class CheckoutActivity : AppCompatActivity() {
             }
             tv_checkout_mobile_number.text = mAddressDetails?.mobileNumber
         }
+
+        getProductList()
+    }
+
+    fun successProductListFromFireStore(productsList: ArrayList<Product>){
+        mProductList = productsList
+        getCartItemsList()
+    }
+
+    private fun getCartItemsList(){
+        FirestoreClass().getCatList(this@CheckoutActivity)
+    }
+
+    fun successCartItemsList(cartList: ArrayList<CartItem>){
+        hideProgressDialog()
+        mCartItemList = cartList
+    }
+
+    private fun getProductList(){
+        //Show the progress dialog
+        showProgressDialog(resources.getString(R.string.please_wait))
+
+        FirestoreClass().getAllProductsList(this@CheckoutActivity)
     }
 
     private fun setUpActionBar(){

@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.net.Uri
 import android.util.Log
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import br.com.xpmw.myshoppal.model.Address
 import br.com.xpmw.myshoppal.model.CartItem
@@ -22,7 +21,6 @@ import br.com.xpmw.myshoppal.utils.Constants.PRODUCTS
 import br.com.xpmw.myshoppal.utils.Constants.PRODUCT_ID
 import br.com.xpmw.myshoppal.utils.Constants.USERS
 import br.com.xpmw.myshoppal.utils.Constants.USER_ID
-import br.com.xpmw.myshoppal.utils.Constants.USER_PROFILE_IMAGE
 import br.com.xpmw.myshoppal.utils.Constants.getFileExtension
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -283,11 +281,17 @@ class FirestoreClass {
                     is CartListActivity -> {
                         activity.successCartItemsList(list)
                     }
+                    is CheckoutActivity -> {
+                        activity.successCartItemsList(list)
+                    }
                 }
             }
             .addOnFailureListener { e ->
                 when (activity) {
                     is CartListActivity -> {
+                        activity.hideProgressDialog()
+                    }
+                    is CheckoutActivity -> {
                         activity.hideProgressDialog()
                     }
                 }
@@ -307,15 +311,14 @@ class FirestoreClass {
             .addOnSuccessListener { document ->
                 Log.e(activity.javaClass.simpleName, document.documents.toString())
                 val addressList: ArrayList<Address> = ArrayList()
-                for (i in document.documents){
+                for (i in document.documents) {
                     val address = i.toObject(Address::class.java)!!
                     address.id = i.id
                     addressList.add(address)
                 }
                 activity.successAddressListFromFirestore(addressList)
             }
-            .addOnFailureListener {
-                e ->
+            .addOnFailureListener { e ->
                 activity.hideProgressDialog()
                 Log.e(
                     activity.javaClass.simpleName,
@@ -324,15 +327,14 @@ class FirestoreClass {
             }
     }
 
-    fun deleteAddress(activity: AddressListActivity, addressId: String){
+    fun deleteAddress(activity: AddressListActivity, addressId: String) {
         mFirestore.collection(ADDRESS)
             .document(addressId)
             .delete()
             .addOnSuccessListener {
                 activity.deleteAddressSuccess()
             }
-            .addOnFailureListener {
-                e ->
+            .addOnFailureListener { e ->
                 activity.hideProgressDialog()
                 Log.e(
                     activity.javaClass.simpleName,
@@ -342,7 +344,7 @@ class FirestoreClass {
             }
     }
 
-    fun upDateAddress(activity: AddEditAddressActivity, addressInfo: Address, addressId: String){
+    fun upDateAddress(activity: AddEditAddressActivity, addressInfo: Address, addressId: String) {
         mFirestore.collection(ADDRESS)
             .document(addressId)
             .set(addressInfo, SetOptions.merge())
@@ -353,7 +355,7 @@ class FirestoreClass {
                 activity.hideProgressDialog()
                 Log.e(
                     activity.javaClass.simpleName,
-                "Error while updating the address"
+                    "Error while updating the address"
                 )
             }
     }
@@ -448,7 +450,7 @@ class FirestoreClass {
             }
     }
 
-    fun getAllProductsList(activity: CartListActivity) {
+    fun getAllProductsList(activity: Activity) {
         mFirestore.collection(PRODUCTS)
             .get()
             .addOnSuccessListener { document ->
@@ -459,10 +461,24 @@ class FirestoreClass {
                     product!!.product_id = i.id
                     productsList.add(product)
                 }
-                activity.successProductListFromFireStore(productsList)
+                when (activity) {
+                    is CartListActivity -> {
+                        activity.successProductListFromFireStore(productsList)
+                    }
+                    is CheckoutActivity -> {
+                        activity.successProductListFromFireStore(productsList)
+                    }
+                }
             }
             .addOnFailureListener { e ->
-                activity.hideProgressDialog()
+                when (activity) {
+                    is CartListActivity -> {
+                        activity.hideProgressDialog()
+                    }
+                    is CheckoutActivity -> {
+                        activity.hideProgressDialog()
+                    }
+                }
                 Log.e("Get Product List", "Error while getting all product list", e)
             }
     }

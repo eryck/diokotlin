@@ -6,10 +6,7 @@ import android.content.SharedPreferences
 import android.net.Uri
 import android.util.Log
 import androidx.fragment.app.Fragment
-import br.com.xpmw.myshoppal.model.Address
-import br.com.xpmw.myshoppal.model.CartItem
-import br.com.xpmw.myshoppal.model.Product
-import br.com.xpmw.myshoppal.model.User
+import br.com.xpmw.myshoppal.model.*
 import br.com.xpmw.myshoppal.ui.activities.*
 import br.com.xpmw.myshoppal.ui.fragments.DashboardFragment
 import br.com.xpmw.myshoppal.ui.fragments.ProductsFragment
@@ -17,6 +14,7 @@ import br.com.xpmw.myshoppal.utils.Constants.ADDRESS
 import br.com.xpmw.myshoppal.utils.Constants.CART_ITEMS
 import br.com.xpmw.myshoppal.utils.Constants.LOGGED_IN_USERNAME
 import br.com.xpmw.myshoppal.utils.Constants.MYSHOPPAL_PREFERENCES
+import br.com.xpmw.myshoppal.utils.Constants.ORDERS
 import br.com.xpmw.myshoppal.utils.Constants.PRODUCTS
 import br.com.xpmw.myshoppal.utils.Constants.PRODUCT_ID
 import br.com.xpmw.myshoppal.utils.Constants.USERS
@@ -323,6 +321,23 @@ class FirestoreClass {
                 Log.e(
                     activity.javaClass.simpleName,
                     "Error while getting the address", e
+                )
+            }
+    }
+
+    fun placeOrder(activity: CheckoutActivity, order: Order) {
+        mFirestore.collection(ORDERS)
+            .document()
+            .set(order, SetOptions.merge())
+            .addOnSuccessListener {
+                activity.successPlacedOrder()
+            }
+            .addOnFailureListener { e ->
+                activity.hideProgressDialog()
+                Log.e(
+                    activity.javaClass.simpleName,
+                    "Error while placing an order",
+                    e
                 )
             }
     }

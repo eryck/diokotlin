@@ -1,5 +1,6 @@
 package br.com.xpmw.myshoppal.ui.activities
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -66,13 +67,14 @@ class CartListActivity : BaseActivity() {
         getCartItemsList()
     }
 
+    @SuppressLint("SetTextI18n")
     fun successCartItemsList(cartList: ArrayList<CartItem>) {
         hideProgressDialog()
 
         for (product in mProductList) {
             for (cartItem in cartList) {
                 if (product.product_id == cartItem.product_id) {
-                    cartItem.stock_quantity == product.stock_quantity
+                    cartItem.stock_quantity = product.stock_quantity
 
                     if (product.stock_quantity.toInt() == 0) {
                         cartItem.cart_quantity = product.stock_quantity
@@ -94,7 +96,7 @@ class CartListActivity : BaseActivity() {
             val cartListAdapter = CartItemListAdapter(this@CartListActivity, mCartListItems, true)
             rv_cart_items_list.adapter = cartListAdapter
 
-            var subTotal: Double = 0.0
+            var subTotal = 0.0
 
             for (item in mCartListItems) {
                 val availableQuantity = item.stock_quantity.toInt()

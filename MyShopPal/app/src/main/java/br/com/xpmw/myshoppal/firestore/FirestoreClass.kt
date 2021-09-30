@@ -17,6 +17,7 @@ import br.com.xpmw.myshoppal.utils.Constants.MYSHOPPAL_PREFERENCES
 import br.com.xpmw.myshoppal.utils.Constants.ORDERS
 import br.com.xpmw.myshoppal.utils.Constants.PRODUCTS
 import br.com.xpmw.myshoppal.utils.Constants.PRODUCT_ID
+import br.com.xpmw.myshoppal.utils.Constants.STOCK_QUANTITY
 import br.com.xpmw.myshoppal.utils.Constants.USERS
 import br.com.xpmw.myshoppal.utils.Constants.USER_ID
 import br.com.xpmw.myshoppal.utils.Constants.getFileExtension
@@ -322,6 +323,42 @@ class FirestoreClass {
                     activity.javaClass.simpleName,
                     "Error while getting the address", e
                 )
+            }
+    }
+
+    fun updateAllDetails(activity: CheckoutActivity, cartList: ArrayList<CartItem>) {
+        val writeBatch = mFirestore.batch()
+
+        for (cartItem in cartList) {
+            val productHashMap = HashMap<String, Any>()
+
+            productHashMap[STOCK_QUANTITY] =
+                (cartItem.stock_quantity.toInt() - cartItem.cart_quantity.toInt()).toString()
+
+            val documentReference = mFirestore.collection(PRODUCTS)
+                .document(cartItem.product_id)
+
+            writeBatch.update(documentReference, productHashMap)
+        }
+
+        for (cartItem in cartList) {
+            val documentReference = mFirestore.collection(CART_ITEMS)
+                .document(cartItem.id)
+            writeBatch.delete(documentReference)
+        }
+
+        writeBatch.commit()
+            .addOnSuccessListener {
+                activity.allDetailsUpdatedSuccessfully()
+            }
+            .addOnFailureListener { e ->
+                activity.hideProgressDialog()
+                Log.e(
+                    activity.javaClass.simpleName,
+                    "Error While updating all the details after order placed",
+                    e
+                )
+
             }
     }
 

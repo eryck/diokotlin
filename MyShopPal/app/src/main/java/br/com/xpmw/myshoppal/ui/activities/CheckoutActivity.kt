@@ -1,5 +1,6 @@
 package br.com.xpmw.myshoppal.ui.activities
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -12,7 +13,7 @@ import br.com.xpmw.myshoppal.model.CartItem
 import br.com.xpmw.myshoppal.model.Order
 import br.com.xpmw.myshoppal.model.Product
 import br.com.xpmw.myshoppal.ui.adapters.CartItemListAdapter
-import br.com.xpmw.myshoppal.utils.Constants.EXTRA_SELECT_ADDRESS
+import br.com.xpmw.myshoppal.utils.Constants.EXTRA_SELECTED_ADDRESS
 import kotlinx.android.synthetic.main.activity_checkout.*
 
 class CheckoutActivity : BaseActivity() {
@@ -23,13 +24,14 @@ class CheckoutActivity : BaseActivity() {
     private var mSubTotal: Double = 0.0
     private var mTotalAmount: Double = 0.0
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_checkout)
         setUpActionBar()
 
-        if (intent.hasExtra(EXTRA_SELECT_ADDRESS)) {
-            mAddressDetails = intent.getParcelableExtra<Address>(EXTRA_SELECT_ADDRESS)
+        if (intent.hasExtra(EXTRA_SELECTED_ADDRESS)) {
+            mAddressDetails = intent.getParcelableExtra<Address>(EXTRA_SELECTED_ADDRESS)
         }
 
         if (mAddressDetails != null) {
@@ -48,7 +50,7 @@ class CheckoutActivity : BaseActivity() {
         btn_place_order.setOnClickListener { placeAnOrder() }
     }
 
-    fun successPlacedOrder(){
+    fun allDetailsUpdatedSuccessfully() {
         hideProgressDialog()
         Toast.makeText(this, "Your order was placed successfully", Toast.LENGTH_LONG).show()
 
@@ -56,6 +58,10 @@ class CheckoutActivity : BaseActivity() {
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
         finish()
+    }
+
+    fun successPlacedOrder() {
+        FirestoreClass().updateAllDetails(this, mCartItemList)
     }
 
     fun successProductListFromFireStore(productsList: ArrayList<Product>) {
@@ -85,6 +91,7 @@ class CheckoutActivity : BaseActivity() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     fun successCartItemsList(cartList: ArrayList<CartItem>) {
         hideProgressDialog()
         for (product in mProductList) {

@@ -111,7 +111,8 @@ class AddProductActivity : BaseActivity(), View.OnClickListener {
             et_product_price.text.toString().trim{it <= ' '},
             et_product_description.text.toString().trim{it <= ' '},
             et_product_quantity.text.toString().trim{it <= ' '},
-            mProductImageURL
+            mProductImageURL,
+            ""
         )
 
         FirestoreClass().uploadProductDetails(this, product)

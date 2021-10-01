@@ -20,7 +20,7 @@ import br.com.xpmw.myshoppal.utils.Constants
 import br.com.xpmw.myshoppal.utils.Constants.LOGGED_IN_USERNAME
 import br.com.xpmw.myshoppal.utils.Constants.MYSHOPPAL_PREFERENCES
 import br.com.xpmw.myshoppal.utils.Constants.PRODUCT_IMAGE
-import br.com.xpmw.myshoppal.utils.GliderLoader
+import br.com.xpmw.myshoppal.utils.GlideLoader
 import kotlinx.android.synthetic.main.activity_add_product.*
 import java.io.IOException
 
@@ -148,7 +148,7 @@ class AddProductActivity : BaseActivity(), View.OnClickListener {
                     mSelectedImageFileURI = data.data!!
 
                     try {
-                        GliderLoader(this).loadUserPicture(mSelectedImageFileURI!!, iv_product_image)
+                        GlideLoader(this).loadUserPicture(mSelectedImageFileURI!!, iv_product_image)
                     }catch (e: IOException){
                         e.printStackTrace()
                         Toast.makeText(this, getString(R.string.image_selection_failed), Toast.LENGTH_SHORT).show()

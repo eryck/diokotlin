@@ -12,7 +12,7 @@ import br.com.xpmw.myshoppal.ui.activities.ProductDetailsActivity
 import br.com.xpmw.myshoppal.ui.fragments.ProductsFragment
 import br.com.xpmw.myshoppal.utils.Constants.EXTRA_PRODUCT_ID
 import br.com.xpmw.myshoppal.utils.Constants.EXTRA_PRODUCT_OWNER_ID
-import br.com.xpmw.myshoppal.utils.GliderLoader
+import br.com.xpmw.myshoppal.utils.GlideLoader
 import kotlinx.android.synthetic.main.item_list_layout.view.*
 
 open class MyProductsListAdapter(
@@ -35,7 +35,7 @@ open class MyProductsListAdapter(
         val model = list[position]
 
         if (holder is MyViewHolder){
-            GliderLoader(context).loadProductPicture(model.image, holder.itemView.iv_item_image)
+            GlideLoader(context).loadProductPicture(model.image, holder.itemView.iv_item_image)
             holder.itemView.tv_item_name.text = model.title
             holder.itemView.tv_item_price.text = "$${model.price}"
 

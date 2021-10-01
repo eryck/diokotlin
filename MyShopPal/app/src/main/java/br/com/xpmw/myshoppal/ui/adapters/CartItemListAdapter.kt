@@ -11,7 +11,7 @@ import br.com.xpmw.myshoppal.firestore.FirestoreClass
 import br.com.xpmw.myshoppal.model.CartItem
 import br.com.xpmw.myshoppal.ui.activities.CartListActivity
 import br.com.xpmw.myshoppal.utils.Constants.CART_QUANTITY
-import br.com.xpmw.myshoppal.utils.GliderLoader
+import br.com.xpmw.myshoppal.utils.GlideLoader
 import kotlinx.android.synthetic.main.item_cart_layout.view.*
 
 class CartItemListAdapter(
@@ -32,7 +32,7 @@ class CartItemListAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val model = list[position]
         if (holder is MyViewHolder) {
-            GliderLoader(context).loadProductPicture(
+            GlideLoader(context).loadProductPicture(
                 model.image,
                 holder.itemView.iv_cart_item_image
             )

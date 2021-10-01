@@ -29,7 +29,7 @@ import br.com.xpmw.myshoppal.utils.Constants.PICK_IMAGE_REQUEST_CODE
 import br.com.xpmw.myshoppal.utils.Constants.READ_STORAGE_PERMISSION_CODE
 import br.com.xpmw.myshoppal.utils.Constants.USER_PROFILE_IMAGE
 import br.com.xpmw.myshoppal.utils.Constants.showImageChooser
-import br.com.xpmw.myshoppal.utils.GliderLoader
+import br.com.xpmw.myshoppal.utils.GlideLoader
 import kotlinx.android.synthetic.main.activity_user_profile.*
 import java.io.IOException
 
@@ -61,7 +61,7 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
         } else {
             setupActionBar()
             tv_title.text = resources.getString(R.string.title_edit_profile)
-            GliderLoader(this).loadUserPicture(mUserDetails.image, iv_user_photo)
+            GlideLoader(this).loadUserPicture(mUserDetails.image, iv_user_photo)
 
             et_email.isEnabled = false
             et_email.setText(mUserDetails.email)
@@ -208,7 +208,7 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
                     try {
                         mSelectedImageFileUri = data.data!!
                         //iv_user_photo.setImageURI(selectedImageFireUri)
-                        GliderLoader(this).loadUserPicture(mSelectedImageFileUri!!, iv_user_photo)
+                        GlideLoader(this).loadUserPicture(mSelectedImageFileUri!!, iv_user_photo)
                     } catch (e: IOException) {
                         e.printStackTrace()
                         Toast.makeText(

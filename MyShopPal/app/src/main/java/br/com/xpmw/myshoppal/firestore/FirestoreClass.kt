@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import br.com.xpmw.myshoppal.model.*
 import br.com.xpmw.myshoppal.ui.activities.*
 import br.com.xpmw.myshoppal.ui.fragments.DashboardFragment
+import br.com.xpmw.myshoppal.ui.fragments.OrdersFragment
 import br.com.xpmw.myshoppal.ui.fragments.ProductsFragment
 import br.com.xpmw.myshoppal.utils.Constants.ADDRESS
 import br.com.xpmw.myshoppal.utils.Constants.CART_ITEMS
@@ -358,6 +359,30 @@ class FirestoreClass {
                     "Error While updating all the details after order placed",
                     e
                 )
+
+            }
+    }
+
+    fun getMyOrderList(fragment: OrdersFragment){
+        mFirestore.collection(ORDERS)
+            .whereEqualTo(USER_ID, getCurrentUserID())
+            .get()
+            .addOnSuccessListener { document ->
+                val list: ArrayList<Order> = ArrayList()
+
+                for (i in document.documents){
+                    i.let {
+                        val orderItem = it.toObject(Order::class.java)!!
+                        orderItem.id = it.id
+                        list.add(orderItem)
+                    }
+                }
+
+                fragment.popularOrderListInUI(list)
+            }
+            .addOnFailureListener { e ->
+                fragment.hideProgressDialog()
+                Log.e(fragment.javaClass.simpleName, "Error while getting the orders list", e)
 
             }
     }

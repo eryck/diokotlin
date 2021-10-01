@@ -12,7 +12,7 @@ import br.com.xpmw.myshoppal.model.Product
 import br.com.xpmw.myshoppal.utils.Constants.DEFAULT_CART_QUANTITY
 import br.com.xpmw.myshoppal.utils.Constants.EXTRA_PRODUCT_ID
 import br.com.xpmw.myshoppal.utils.Constants.EXTRA_PRODUCT_OWNER_ID
-import br.com.xpmw.myshoppal.utils.GliderLoader
+import br.com.xpmw.myshoppal.utils.GlideLoader
 import kotlinx.android.synthetic.main.activity_product_details.*
 
 class ProductDetailsActivity : BaseActivity(), View.OnClickListener {
@@ -61,7 +61,7 @@ class ProductDetailsActivity : BaseActivity(), View.OnClickListener {
 
     fun productDetailsSuccess(product: Product) {
         mProductDetails = product
-        GliderLoader(this).loadProductPicture(
+        GlideLoader(this).loadProductPicture(
             product.image,
             iv_product_detail_image
         )

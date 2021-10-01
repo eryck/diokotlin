@@ -145,4 +145,6 @@
     <string name="btn_lbl_place_order">PLACE ORDER</string>
     <string name="ten_dollar">$10.0</string>
 
+    <string name="no_orders_placed_yet">No orders placed yet!</string>
+
 </resources>

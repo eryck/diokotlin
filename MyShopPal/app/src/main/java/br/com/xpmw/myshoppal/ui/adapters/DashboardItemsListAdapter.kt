@@ -9,10 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 import br.com.xpmw.myshoppal.R
 import br.com.xpmw.myshoppal.model.Product
 import br.com.xpmw.myshoppal.ui.activities.ProductDetailsActivity
-import br.com.xpmw.myshoppal.utils.Constants
 import br.com.xpmw.myshoppal.utils.Constants.EXTRA_PRODUCT_ID
 import br.com.xpmw.myshoppal.utils.Constants.EXTRA_PRODUCT_OWNER_ID
-import br.com.xpmw.myshoppal.utils.GliderLoader
+import br.com.xpmw.myshoppal.utils.GlideLoader
 import kotlinx.android.synthetic.main.item_dashboard_layout.view.*
 
 class DashboardItemsListAdapter(
@@ -34,7 +33,7 @@ class DashboardItemsListAdapter(
         val model = list[position]
 
         if (holder is MyViewHolder){
-            GliderLoader(context).loadProductPicture(
+            GlideLoader(context).loadProductPicture(
                 model.image,
                 holder.itemView.iv_dashboard_item_image!!
             )

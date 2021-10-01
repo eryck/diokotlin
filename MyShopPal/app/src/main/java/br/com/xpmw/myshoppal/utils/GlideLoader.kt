@@ -7,7 +7,7 @@ import br.com.xpmw.myshoppal.R
 import com.bumptech.glide.Glide
 import java.io.IOException
 
-class GliderLoader(val context: Context) {
+class GlideLoader(val context: Context) {
     fun loadUserPicture(image: Any, imageView: ImageView) {
         try {
             //Load the user image in the imageView

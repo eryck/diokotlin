@@ -1,14 +1,13 @@
 package br.com.xpmw.myshoppal.ui.activities
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import br.com.xpmw.myshoppal.R
 import br.com.xpmw.myshoppal.firestore.FirestoreClass
 import br.com.xpmw.myshoppal.model.User
 import br.com.xpmw.myshoppal.utils.Constants
-import br.com.xpmw.myshoppal.utils.GliderLoader
+import br.com.xpmw.myshoppal.utils.GlideLoader
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_settings.*
 
@@ -49,7 +48,7 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
 
         hideProgressDialog()
 
-        GliderLoader(this).loadUserPicture(user.image, iv_user_photo)
+        GlideLoader(this).loadUserPicture(user.image, iv_user_photo)
         tv_name.text = "${user.firstName} ${user.lastName}"
         tv_gender.text = user.gender
         tv_email.text = user.email

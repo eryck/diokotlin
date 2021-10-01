@@ -34,7 +34,7 @@ class OrdersFragment : BaseFragment() {
             rv_my_order_items.visibility = View.VISIBLE
             tv_no_orders_found.visibility = View.GONE
 
-            rv_my_order_items.layoutManager = LinearLayoutManager(activity)
+            rv_my_order_items.layoutManager = LinearLayoutManager(requireActivity())
             rv_my_order_items.setHasFixedSize(true)
 
             val myOrdersAdapter = MyOrdersListAdapter(requireContext(), orderList)

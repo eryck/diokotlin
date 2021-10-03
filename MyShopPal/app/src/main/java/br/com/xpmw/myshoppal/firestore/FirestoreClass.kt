@@ -11,6 +11,7 @@ import br.com.xpmw.myshoppal.ui.activities.*
 import br.com.xpmw.myshoppal.ui.fragments.DashboardFragment
 import br.com.xpmw.myshoppal.ui.fragments.OrdersFragment
 import br.com.xpmw.myshoppal.ui.fragments.ProductsFragment
+import br.com.xpmw.myshoppal.ui.fragments.SoldProductsFragment
 import br.com.xpmw.myshoppal.utils.Constants.ADDRESS
 import br.com.xpmw.myshoppal.utils.Constants.CART_ITEMS
 import br.com.xpmw.myshoppal.utils.Constants.LOGGED_IN_USERNAME
@@ -372,6 +373,32 @@ class FirestoreClass {
                 Log.e(
                     activity.javaClass.simpleName,
                     "Error While updating all the details after order placed",
+                    e
+                )
+
+            }
+    }
+
+    fun getSoldProductsList(fragment: SoldProductsFragment){
+        mFirestore.collection(SOLD_PRODUCTS)
+            .whereEqualTo(USER_ID, getCurrentUserID())
+            .get()
+            .addOnSuccessListener { document ->
+                val list: ArrayList<SoldProduct> = ArrayList()
+                for (i in document.documents){
+                    val soldProduct = i.toObject(SoldProduct::class.java)!!
+                    soldProduct.id = i.id
+
+                    list.add(soldProduct)
+                }
+
+                fragment.successSoldProductList(list)
+            }
+            .addOnFailureListener { e ->
+                fragment.hideProgressDialog()
+                Log.e(
+                    fragment.javaClass.simpleName,
+                    "Error While getting the list of sold products",
                     e
                 )
 

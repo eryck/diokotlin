@@ -18,6 +18,7 @@ import br.com.xpmw.myshoppal.utils.Constants.MYSHOPPAL_PREFERENCES
 import br.com.xpmw.myshoppal.utils.Constants.ORDERS
 import br.com.xpmw.myshoppal.utils.Constants.PRODUCTS
 import br.com.xpmw.myshoppal.utils.Constants.PRODUCT_ID
+import br.com.xpmw.myshoppal.utils.Constants.SOLD_PRODUCTS
 import br.com.xpmw.myshoppal.utils.Constants.STOCK_QUANTITY
 import br.com.xpmw.myshoppal.utils.Constants.USERS
 import br.com.xpmw.myshoppal.utils.Constants.USER_ID
@@ -327,19 +328,33 @@ class FirestoreClass {
             }
     }
 
-    fun updateAllDetails(activity: CheckoutActivity, cartList: ArrayList<CartItem>) {
+    fun updateAllDetails(activity: CheckoutActivity, cartList: ArrayList<CartItem>, order: Order) {
         val writeBatch = mFirestore.batch()
 
         for (cartItem in cartList) {
             val productHashMap = HashMap<String, Any>()
 
-            productHashMap[STOCK_QUANTITY] =
-                (cartItem.stock_quantity.toInt() - cartItem.cart_quantity.toInt()).toString()
+//            productHashMap[STOCK_QUANTITY] =
+//                (cartItem.stock_quantity.toInt() - cartItem.cart_quantity.toInt()).toString()
 
-            val documentReference = mFirestore.collection(PRODUCTS)
+            val soldProduct = SoldProduct(
+                cartItem.product_owner_id,
+                cartItem.title,
+                cartItem.price,
+                cartItem.cart_quantity,
+                cartItem.image,
+                order.title,
+                order.order_datetime,
+                order.sub_total_amount,
+                order.shipping_charge,
+                order.total_amount,
+                order.address
+            )
+
+            val documentReference = mFirestore.collection(SOLD_PRODUCTS)
                 .document(cartItem.product_id)
 
-            writeBatch.update(documentReference, productHashMap)
+            writeBatch.set(documentReference, soldProduct)
         }
 
         for (cartItem in cartList) {
@@ -363,14 +378,14 @@ class FirestoreClass {
             }
     }
 
-    fun getMyOrderList(fragment: OrdersFragment){
+    fun getMyOrderList(fragment: OrdersFragment) {
         mFirestore.collection(ORDERS)
             .whereEqualTo(USER_ID, getCurrentUserID())
             .get()
             .addOnSuccessListener { document ->
                 val list: ArrayList<Order> = ArrayList()
 
-                for (i in document.documents){
+                for (i in document.documents) {
                     val orderItem = i.toObject(Order::class.java)!!
                     orderItem.id = i.id
                     list.add(orderItem)

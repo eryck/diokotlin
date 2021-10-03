@@ -58,7 +58,6 @@ class DashboardFragment : BaseFragment() {
                 startActivity(Intent(activity, CartListActivity::class.java))
                 return true
             }
-
         }
         return super.onOptionsItemSelected(item)
     }

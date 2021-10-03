@@ -158,4 +158,7 @@
     <string name="order_status_in_process">In Process</string>
     <string name="order_status_delivered">Delivered</string>
 
+    <string name="title_sold_product">Sold Products</string>
+    <string name="no_products_sold_out_yet">No products sold yet!</string>
+
 </resources>

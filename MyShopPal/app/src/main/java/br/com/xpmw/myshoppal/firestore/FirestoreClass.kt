@@ -371,19 +371,15 @@ class FirestoreClass {
                 val list: ArrayList<Order> = ArrayList()
 
                 for (i in document.documents){
-                    i.let {
-                        val orderItem = it.toObject(Order::class.java)!!
-                        orderItem.id = it.id
-                        list.add(orderItem)
-                    }
+                    val orderItem = i.toObject(Order::class.java)!!
+                    orderItem.id = i.id
+                    list.add(orderItem)
                 }
-
                 fragment.popularOrderListInUI(list)
             }
             .addOnFailureListener { e ->
                 fragment.hideProgressDialog()
                 Log.e(fragment.javaClass.simpleName, "Error while getting the orders list", e)
-
             }
     }
 

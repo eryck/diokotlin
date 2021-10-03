@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.item_cart_layout.view.*
 class CartItemListAdapter(
     private val context: Context,
     private val list: ArrayList<CartItem>,
-    private val updateCartItem: Boolean
+    private val updateCartItems: Boolean
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return MyViewHolder(
@@ -32,10 +32,9 @@ class CartItemListAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val model = list[position]
         if (holder is MyViewHolder) {
-            GlideLoader(context).loadProductPicture(
-                model.image,
-                holder.itemView.iv_cart_item_image
-            )
+
+            GlideLoader(context).loadProductPicture(model.image, holder.itemView.iv_cart_item_image)
+
             holder.itemView.tv_cart_item_title.text = model.title
             holder.itemView.tv_cart_item_price.text = "$${model.price}"
             holder.itemView.tv_cart_quantity.text = model.cart_quantity
@@ -44,9 +43,9 @@ class CartItemListAdapter(
                 holder.itemView.ib_remove_cart_item.visibility = View.GONE
                 holder.itemView.ib_add_cart_item.visibility = View.GONE
 
-                if (updateCartItem){
+                if (updateCartItems) {
                     holder.itemView.ib_delete_cart_item.visibility = View.VISIBLE
-                }else{
+                } else {
                     holder.itemView.ib_delete_cart_item.visibility = View.GONE
                 }
 
@@ -54,70 +53,93 @@ class CartItemListAdapter(
                     context.resources.getString(R.string.lbl_out_of_stock)
 
                 holder.itemView.tv_cart_quantity.setTextColor(
-                    ContextCompat.getColor(context, R.color.colorSnackBarError)
+                    ContextCompat.getColor(
+                        context,
+                        R.color.colorSnackBarError
+                    )
                 )
             } else {
-                if(updateCartItem){
+
+                if (updateCartItems) {
                     holder.itemView.ib_remove_cart_item.visibility = View.VISIBLE
                     holder.itemView.ib_add_cart_item.visibility = View.VISIBLE
                     holder.itemView.ib_delete_cart_item.visibility = View.VISIBLE
-                }else{
+                } else {
+
                     holder.itemView.ib_remove_cart_item.visibility = View.GONE
                     holder.itemView.ib_add_cart_item.visibility = View.GONE
                     holder.itemView.ib_delete_cart_item.visibility = View.GONE
                 }
 
                 holder.itemView.tv_cart_quantity.setTextColor(
-                    ContextCompat.getColor(context, R.color.colorSecondaryText)
+                    ContextCompat.getColor(
+                        context,
+                        R.color.colorSecondaryText
+                    )
                 )
             }
 
-            holder.itemView.ib_delete_cart_item.setOnClickListener {
-                when (context) {
-                    is CartListActivity -> {
-                        context.showProgressDialog(context.getString(R.string.please_wait))
-                    }
-                }
-                FirestoreClass().removeItemFromCart(context, model.id)
-            }
-
             holder.itemView.ib_remove_cart_item.setOnClickListener {
-                if (model.cart_quantity == "1"){
+
+                if (model.cart_quantity == "1") {
                     FirestoreClass().removeItemFromCart(context, model.id)
-                }else{
+                } else {
+
                     val cartQuantity: Int = model.cart_quantity.toInt()
+
                     val itemHashMap = HashMap<String, Any>()
 
                     itemHashMap[CART_QUANTITY] = (cartQuantity - 1).toString()
 
-                    if (context is CartListActivity){
-                        context.showProgressDialog(context.getString(R.string.please_wait))
+                    // Show the progress dialog.
+
+                    if (context is CartListActivity) {
+                        context.showProgressDialog(context.resources.getString(R.string.please_wait))
                     }
+
                     FirestoreClass().updateMyCart(context, model.id, itemHashMap)
                 }
             }
 
             holder.itemView.ib_add_cart_item.setOnClickListener {
+
                 val cartQuantity: Int = model.cart_quantity.toInt()
-                if (cartQuantity < model.stock_quantity.toInt()){
+
+                if (cartQuantity < model.stock_quantity.toInt()) {
+
                     val itemHashMap = HashMap<String, Any>()
+
                     itemHashMap[CART_QUANTITY] = (cartQuantity + 1).toString()
 
-                    if (context is CartListActivity){
-                        context.showProgressDialog(context.getString(R.string.please_wait))
+                    // Show the progress dialog.
+                    if (context is CartListActivity) {
+                        context.showProgressDialog(context.resources.getString(R.string.please_wait))
                     }
+
                     FirestoreClass().updateMyCart(context, model.id, itemHashMap)
-                }else{
-                    if (context is CartListActivity){
+                } else {
+                    if (context is CartListActivity) {
                         context.showErrorSnackBar(
-                            context.getString(
+                            context.resources.getString(
                                 R.string.msg_for_available_stock,
-                                model.stock_quantity.toString()),
-                            true)
+                                model.stock_quantity
+                            ),
+                            true
+                        )
                     }
                 }
             }
 
+            holder.itemView.ib_delete_cart_item.setOnClickListener {
+
+                when (context) {
+                    is CartListActivity -> {
+                        context.showProgressDialog(context.resources.getString(R.string.please_wait))
+                    }
+                }
+
+                FirestoreClass().removeItemFromCart(context, model.id)
+            }
         }
     }
 

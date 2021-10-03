@@ -12,6 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyShopPal">
         <activity
+            android:name=".ui.activities.SoldProductsDetailsActivity"
+            android:screenOrientation="fullSensor"
+            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
+        <activity
             android:name=".ui.activities.MyOrderDetailsActivity"
             android:screenOrientation="fullSensor"
             android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
